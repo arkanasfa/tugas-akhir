@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Player Form</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: styles" th:remove="tag"></object>
+</head>
+<body style="font-family: 'Noto Sans KR', sans-serif;">
+<nav th:replace="fragments/fragment"></nav>
+<div class="jumbotron jumbotron-fluid" style="background-color: transparent">
+    <div class="container">
+        <h1 class="display-4">Add Player</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row container-fluid">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Input Player Information</h3>
+                    <form th:action="@{/player/add}" th:object="${newPlayer}" method="POST">
+                        <input type="hidden" th:field="*{id}"/>
+                        <div class="form-group row">
+                            <label class="col-sm-3">Name: </label>
+                            <div class="col-sm-3">
+                                <input  type="text" class="form-control" placeholder="Name" th:field="*{name}" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3">Birth Date: </label>
+                            <div class="col-sm-3">
+                                <input  type="date" class="form-control" placeholder="Birth Date" th:field="*{birthday}" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3">Height (cm): </label>
+                            <div class="col-sm-3">
+                                <input  type="text" class="form-control" placeholder="Height" th:field="*{height}" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3">Weight (kg): </label>
+                            <div class="col-sm-3">
+                                <input  type="text" class="form-control" placeholder="Weight" th:field="*{weight}" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3">Shirt Number: </label>
+                            <div class="col-sm-3">
+                                <input  type="text" class="form-control" placeholder="Shirt Number" th:field="*{number}" required="required">
+                            </div>
+                        </div>
+                        <div id="position" class="form-group row" >
+                            <label class="col-sm-3 col-form-label">Position: </label>
+                            <div class="col-sm-3">
+                                <select name="positionId" class="form-control" >
+                                    <option th:each="position : ${listPosition}" th:value="${position.id}" th:text="${position.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="club" class="form-group row" >
+                            <label class="col-sm-3 col-form-label">Club: </label>
+                            <div class="col-sm-3">
+                                <select name="clubId" class="form-control" >
+                                    <option  th:each="club : ${listClub}" th:value="${club.id}" th:text="${club.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/player/list}">Back</a>
+                        <button type="submit" class="btn btn-outline-success btn-lg float-right">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+</body>
+</html>

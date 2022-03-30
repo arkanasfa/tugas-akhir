@@ -31,6 +31,10 @@ public class PlayerModel implements Serializable{
     private Date birthday;
 
     @NotNull
+    @Column(name="age",nullable = false)
+    private Integer age;
+
+    @NotNull
     @Column(name="height",nullable = false)
     private Integer height;
 
@@ -87,6 +91,14 @@ public class PlayerModel implements Serializable{
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public Integer getHeight() {

@@ -26,7 +26,7 @@ public class ClubServiceImpl implements ClubService{
 
     @Override
     public void editClub(ClubModel editedClub) {
-        ClubModel oldClub = clubRepository.findById(editedClub.getId()).get();
+        ClubModel oldClub = getClubById(editedClub.getId());
         oldClub.setName(editedClub.getName());
         clubRepository.save(oldClub);
     }
