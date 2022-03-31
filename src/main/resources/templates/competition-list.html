@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Player List</title>
+    <title>Competition List</title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
     <object th:include="fragments/fragment :: styles" th:remove="tag"></object>
@@ -14,9 +14,9 @@
 <nav th:replace="fragments/fragment"></nav>
 <div class="jumbotron jumbotron-fluid" style="background-color: transparent">
     <div class="container">
-        <h1 class="display-4">Player List</h1>
+        <h1 class="display-4">Competition List</h1>
         <br>
-        <a th:href="@{/player/add}" class="link-light">+ Add new player</a>
+        <a th:href="@{/competition/add}" class="link-light">+ Add new competition</a>
     </div>
 </div>
 <div class="container">
@@ -29,28 +29,22 @@
                         <tr>
                             <th scope="col">No.</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Height</th>
-                            <th scope="col">Weight</th>
-                            <th scope="col">Position</th>
-                            <th scope="col">Shirt Number</th>
-                            <th scope="col">Club</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th>
+                            <th scope="col">Year</th>
                             <th scope="col" colspan="3">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="player, iterationStatus : ${listPlayer}">
+                        <tr th:each="competition, iterationStatus : ${listCompetition}">
                             <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${player.name}"></td>
-                            <td th:text="${player.age} + ' years'"></td>
-                            <td th:text="${player.height} + ' cm'"></td>
-                            <td th:text="${player.weight} + ' kg'"></td>
-                            <td th:text="${player.player_position.name}"></td>
-                            <td th:text="${player.number}"></td>
-                            <td th:text="${player.player_club.name}"></td>
-                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/player/detail(id=${player.id})}">Detail</a></td>
-                            <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/player/edit/(id=${player.id})}">Edit</a></td>
-                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/player/delete(id=${player.id})}">Delete</a></td>
+                            <td th:text="${competition.name}"></td>
+                            <td th:text="${competition.start_date.Date}+'-'+${competition.start_date.Month+1}+'-'+${competition.start_date.Year+1900}"></td>
+                            <td th:text="${competition.end_date.Date}+'-'+${competition.end_date.Month+1}+'-'+${competition.end_date.Year+1900}"></td>
+                            <td th:text="${competition.year}"></td>
+                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/competition/detail(id=${competition.id})}">Detail</a></td>
+                            <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/competition/edit/(id=${competition.id})}">Edit</a></td>
+                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/competition/delete(id=${competition.id})}">Delete</a></td>
                         </tr>
                         </tbody>
                     </table>

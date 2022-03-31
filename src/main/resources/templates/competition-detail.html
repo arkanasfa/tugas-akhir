@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Player Detail</title>
+    <title>Competition Detail</title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
     <object th:include="fragments/fragment :: styles" th:remove="tag"></object>
@@ -14,12 +14,11 @@
 <nav th:replace="fragments/fragment"></nav>
 <div class="jumbotron jumbotron-fluid" style="background-color: transparent">
     <div class="container">
-        <h1 class="display-4" th:text="${player.name}"></h1>
+        <h1 class="display-4" th:text="${competition.name}"></h1>
         <hr>
-        <h3 class="display-7" th:text="${player.player_club.name} + ' | ' + ${player.player_position.name} + ' | ' + ${player.number}"></h3>
+        <h3 class="display-7" th:text="${competition.year}+' | '+'Start Date: '+${competition.start_date.Date}+'-'+${competition.start_date.Month+1}+'-'+${competition.start_date.Year+1900}+' | '+'End Date: '+${competition.end_date.Date}+'-'+${competition.end_date.Month+1}+'-'+${competition.end_date.Year+1900}"></h3>
         <hr>
-        <h5 class="display-10" th:text="'Birthdate: '+${player.birthday.Date}+'-'+${player.birthday.Month+1}+'-'+${player.birthday.Year+1900}+' (Age: '+${player.age}+')'
-        + ' | ' +' Height: '+${player.height}+' cm'+ ' | ' +' Weight: '+${player.weight}+' kg'"></h5>
+        <a th:href="@{/competition/participant/add(id=${competition.id})}" class="link-light">+ Add participant</a><a> | </a><a th:href="@{/competition/add}" class="link-light">+ Add game</a>
     </div>
 </div>
 <div class="container">
@@ -27,7 +26,25 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Personal Statistic</h3>
+                    <h3 class="card-title">Participants</h3>
+                    <table class="rounded table table-bordered">
+                        <thead >
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Name</th>
+                            <th scope="col" colspan="1">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="participant, iterationStatus : ${listClub}">
+                            <td th:text="${iterationStatus.count}"></td>
+                            <td th:text="${participant.name}"></td>
+                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/club/detail(id=${participant.id})}">Detail</a></td>
+                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/competition/participant/remove(participantId=${participant.id},competitionId=${competition.id})}">Remove</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h3 class="card-title">Games</h3>
                     <table class="rounded table table-bordered">
                         <thead >
                         <tr>
@@ -46,26 +63,7 @@
                         </tr>
                         </tbody>-->
                     </table>
-                    <h3 class="card-title">Game Logs</h3>
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col" colspan="3">Action</th>
-                        </tr>
-                        </thead>
-                        <!--<tbody>
-                        <tr th:each="club, iterationStatus : ${listClub}">
-                            <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${club.name}"></td>
-                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/club/detail(id=${club.id})}">Detail</a></td>
-                            <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/club/edit/(id=${club.id})}">Edit</a></td>
-                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/club/delete(id=${club.id})}">Delete</a></td>
-                        </tr>
-                        </tbody>-->
-                    </table>
-                    <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/player/list}">Back</a>
+                    <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/competition/list}">Back</a>
                 </div>
             </div>
         </div>

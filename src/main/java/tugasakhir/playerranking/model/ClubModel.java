@@ -25,7 +25,7 @@ public class ClubModel implements Serializable{
     private String name;
 
     @ManyToMany(mappedBy = "participant_club")
-    private Set<CompetitionModel> competitions;
+    private List<CompetitionModel> competitions;
 
     @OneToMany(mappedBy = "player_club", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -58,11 +58,11 @@ public class ClubModel implements Serializable{
         this.name = name;
     }
 
-    public Set<CompetitionModel> getCompetitions() {
+    public List<CompetitionModel> getCompetitions() {
         return competitions;
     }
 
-    public void setCompetitions(Set<CompetitionModel> competitions) {
+    public void setCompetitions(List<CompetitionModel> competitions) {
         this.competitions = competitions;
     }
 
