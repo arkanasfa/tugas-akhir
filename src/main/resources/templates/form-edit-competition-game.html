@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Game Form</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: styles" th:remove="tag"></object>
+</head>
+<body style="font-family: 'Noto Sans KR', sans-serif;">
+<nav th:replace="fragments/fragment"></nav>
+<div class="jumbotron jumbotron-fluid" style="background-color: transparent">
+    <div class="container">
+        <h1 class="display-4" th:text="'Edit '+${game.game_competition.name}+' Game'"></h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row container-fluid">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Insert Game Information</h3>
+                    <form th:action="@{/competition/game/edit}" th:object="${game}" method="POST">
+                        <input type="hidden" th:field="${game.id}"/>
+                        <input type="hidden" th:field="${game.game_competition}"/>
+                        <div id="home_club" class="form-group row" >
+                            <label class="col-sm-3 col-form-label">Home Club: </label>
+                            <div class="col-sm-3">
+                                <select disabled name="home_clubId" class="form-control" >
+                                    <option th:each="club : ${listClub}" th:value="${club.id}" th:selected="${game.home_club.id==club.id}" th:text="${club.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="away_club" class="form-group row" >
+                            <label class="col-sm-3 col-form-label">Away Club: </label>
+                            <div class="col-sm-3">
+                                <select disabled name="away_clubId" class="form-control" >
+                                    <option th:each="club : ${listClub}" th:value="${club.id}" th:selected="${game.away_club.id==club.id}" th:text="${club.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3">Date: </label>
+                            <div class="col-sm-3">
+                                <input  type="date" class="form-control" th:placeholder="${game.date}" th:field="*{date}" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Tip-Off: </label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="time" th:field="*{tipoff}" th:placeholder="${game.tipoff}" required="required">
+                            </div>
+                        </div>
+                        <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/competition/detail(id=${game.game_competition.id})}">Back</a>
+                        <button type="submit" class="btn btn-outline-success btn-lg float-right">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+</body>
+</html>

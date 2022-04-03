@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import tugasakhir.playerranking.model.ClubModel;
 import tugasakhir.playerranking.model.CompetitionModel;
+import tugasakhir.playerranking.model.GameModel;
 import tugasakhir.playerranking.model.PlayerModel;
 import tugasakhir.playerranking.service.ClubService;
 import tugasakhir.playerranking.service.CompetitionService;
+import tugasakhir.playerranking.service.GameService;
 
 import java.util.List;
 
@@ -22,6 +24,9 @@ public class CompetitionController {
 
     @Autowired
     ClubService clubService;
+
+    @Autowired
+    GameService gameService;
 
     @GetMapping("/list")
     private String listCompetition(
@@ -84,8 +89,10 @@ public class CompetitionController {
             Model model){
         CompetitionModel competition = competitionService.getCompetitionById(id);
         List<ClubModel> listClub = competition.getParticipant_club();
+        List<GameModel> listGame = competition.getGameList();
         model.addAttribute("competition",competition);
         model.addAttribute("listClub",listClub);
+        model.addAttribute("listGame",listGame);
         return "competition-detail";
     }
 
@@ -94,7 +101,6 @@ public class CompetitionController {
             @RequestParam(value="id") Long id,
             Model model) {
         CompetitionModel competition = competitionService.getCompetitionById(id);
-        System.out.println(competition.getName());
         List<ClubModel> listClub = clubService.getClubList();
         List<ClubModel> participantClub = competition.getParticipant_club();
         listClub.removeAll(participantClub);
@@ -120,13 +126,85 @@ public class CompetitionController {
             @RequestParam(value="competitionId") Long competitionId,
             @RequestParam(value="participantId") Long participantId,
             Model model){
-        System.out.println(participantId);
-        System.out.println(competitionId);
         competitionService.removeParticipant(competitionId,participantId);
         model.addAttribute("id",competitionId);
         model.addAttribute("name", competitionService.getCompetitionById(competitionId).getName());
         model.addAttribute("participant", clubService.getClubById(participantId).getName());
         return "participant-removed";
-
     }
+
+    @GetMapping("/game/add")
+    private String addGameForm(
+            @RequestParam(value="id") Long id,
+            Model model) {
+        GameModel newGame = new GameModel();
+        CompetitionModel competition = competitionService.getCompetitionById(id);
+        List<ClubModel> listClub = competition.getParticipant_club();
+        newGame.setGame_competition(competition);
+        model.addAttribute("listClub", listClub);
+        model.addAttribute("newGame",newGame);
+        return "form-add-competition-game";
+    }
+
+    @PostMapping("/game/add")
+    private String addGameFormSubmit(
+            @ModelAttribute GameModel newGame,
+            @RequestParam(value="home_clubId") Long home_id,
+            @RequestParam(value="away_clubId") Long away_id,
+            Model model) {
+        System.out.println(newGame.getId());
+        String gameCode = competitionService.addGame(newGame,home_id,away_id);
+        model.addAttribute("id",newGame.getGame_competition().getId());
+        model.addAttribute("name", newGame.getGame_competition().getName());
+        model.addAttribute("code", gameCode);
+        return "game-added";
+    }
+
+    @GetMapping("/game/delete")
+    private String deleteGame(
+            @RequestParam(value="competitionId") Long competitionId,
+            @RequestParam(value="gameId") Long gameId,
+            Model model){
+        GameModel game = gameService.findGameById(gameId);
+        model.addAttribute("id",competitionId);
+        model.addAttribute("name", competitionService.getCompetitionById(competitionId).getName());
+        model.addAttribute("code", game.getCode());
+        gameService.removeGame(game);
+        return "game-removed";
+    }
+
+    @GetMapping("/game/edit")
+    private String editGameForm(
+            @RequestParam(value="id") Long id,
+            Model model){
+        GameModel game = gameService.findGameById(id);
+        CompetitionModel competition = game.getGame_competition();
+        List<ClubModel> listClub = competition.getParticipant_club();
+        model.addAttribute("listClub",listClub);
+        model.addAttribute("game",game);
+        return "form-edit-competition-game";
+    }
+
+    @PostMapping("/game/edit")
+    private String editGameSubmit(
+            @ModelAttribute GameModel game,
+            Model model){
+        String code = competitionService.editGame(game);
+        model.addAttribute("id",game.getGame_competition().getId());
+        model.addAttribute("name", game.getGame_competition().getName());
+        model.addAttribute("code", code);
+        return "game-edited";
+    }
+
+    @GetMapping("/game/detail")
+    private String detailGame(
+            @RequestParam(value="id") Long id,
+            Model model){
+        GameModel game = gameService.findGameById(id);
+        CompetitionModel competition = game.getGame_competition();
+        model.addAttribute("game",game);
+        model.addAttribute("competition",competition);
+        return "game-detail";
+    }
+
 }

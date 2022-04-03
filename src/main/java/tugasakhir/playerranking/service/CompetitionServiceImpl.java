@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tugasakhir.playerranking.model.ClubModel;
 import tugasakhir.playerranking.model.CompetitionModel;
+import tugasakhir.playerranking.model.GameModel;
 import tugasakhir.playerranking.repository.CompetitionRepository;
+import tugasakhir.playerranking.repository.GameRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -17,7 +20,13 @@ public class CompetitionServiceImpl implements CompetitionService{
     CompetitionRepository competitionRepository;
 
     @Autowired
+    GameRepository gameRepository;
+
+    @Autowired
     ClubService clubService;
+
+    @Autowired
+    GameService gameService;
 
     @Override
     public List<CompetitionModel> getCompetitionList(){return competitionRepository.findAll();}
@@ -60,4 +69,36 @@ public class CompetitionServiceImpl implements CompetitionService{
         targetCompetition.setParticipant_club(oldParticipant);
         competitionRepository.save(targetCompetition);
     }
+
+    @Override
+    public String addGame(GameModel newGame, Long home_clubId, Long away_clubId){
+        ClubModel home_club = clubService.getClubById(home_clubId);
+        ClubModel away_club = clubService.getClubById(away_clubId);
+        newGame.setHome_club(home_club);
+        newGame.setHome_score(Integer.valueOf(0));
+        newGame.setAway_club(away_club);
+        newGame.setAway_score(Integer.valueOf(0));
+        String code = gameCodeGenerator(newGame,home_clubId,away_clubId);
+        newGame.setCode(code);
+        gameRepository.save(newGame);
+        return code;
+    }
+
+    private String gameCodeGenerator(GameModel newGame, Long home_clubId, Long away_clubId){
+        Random random = new Random();
+        return "CO"+String.valueOf(newGame.getGame_competition().getId())+"HM"+String.valueOf(home_clubId)+"AW"+String.valueOf(away_clubId)+
+                String.valueOf(Integer.toString(random.nextInt(9)))+String.valueOf(Integer.toString(random.nextInt(9)))
+                +String.valueOf(Integer.toString(random.nextInt(9)))+String.valueOf(Integer.toString(random.nextInt(9)));
+    }
+
+    @Override
+    public String editGame(GameModel game){
+        GameModel targetGame = gameService.findGameById(game.getId());
+        targetGame.setDate(game.getDate());
+        targetGame.setTipoff(game.getTipoff());
+        gameRepository.save(targetGame);
+        return targetGame.getCode();
+    }
+
+
 }

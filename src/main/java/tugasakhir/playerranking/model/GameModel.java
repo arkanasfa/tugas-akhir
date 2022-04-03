@@ -31,11 +31,24 @@ public class GameModel implements Serializable{
     @Column(name="tipoff",nullable = false)
     private Date tipoff;
 
+    @NotNull
+    @Column(name="home_score",nullable = false)
+    private Integer home_score;
+
+    @NotNull
+    @Column(name="away_score",nullable = false)
+    private Integer away_score;
+
+    @NotNull
+    @Size(max=100)
+    @Column(name="code",nullable = false, unique = true)
+    private String code;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "competition_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private ClubModel game_competition;
+    private CompetitionModel game_competition;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "home_club_id", nullable = false)
@@ -78,11 +91,35 @@ public class GameModel implements Serializable{
         this.tipoff = tipoff;
     }
 
-    public ClubModel getGame_competition() {
+    public Integer getHome_score() {
+        return home_score;
+    }
+
+    public void setHome_score(Integer home_score) {
+        this.home_score = home_score;
+    }
+
+    public Integer getAway_score() {
+        return away_score;
+    }
+
+    public void setAway_score(Integer away_score) {
+        this.away_score = away_score;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public CompetitionModel getGame_competition() {
         return game_competition;
     }
 
-    public void setGame_competition(ClubModel game_competition) {
+    public void setGame_competition(CompetitionModel game_competition) {
         this.game_competition = game_competition;
     }
 
