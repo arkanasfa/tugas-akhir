@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Game Statistics</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: styles" th:remove="tag"></object>
+</head>
+<body style="font-family: 'Noto Sans KR', sans-serif;">
+<nav th:replace="fragments/fragment"></nav>
+<div class="jumbotron jumbotron-fluid" style="background-color: transparent">
+    <div class="container">
+        <h1 class="display-4">Add Game Stastistic</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row container-fluid">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Input Game Statistic</h3>
+                    <form th:action="@{/competition/game/statistic/add(gameId=${game.id},clubId=${club.id})}" enctype="multipart/form-data" method="POST">
+                        <div class="form-group row">
+                            <label class="col-sm-3">Upload CSV: </label>
+                            <div class="col-sm-4">
+                                <input name="file"  type="file" class="form-control" required="required">
+                            </div>
+                        </div>
+                        <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/competition/game/detail(id=${game.id})}">Back</a>
+                        <button type="submit" class="btn btn-outline-success btn-lg float-right">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+</body>
+</html>

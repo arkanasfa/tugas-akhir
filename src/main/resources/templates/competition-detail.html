@@ -49,10 +49,10 @@
                         <thead >
                         <tr>
                             <th scope="col">No.</th>
-                            <th scope="col">Home Team</th>
-                            <th scope="col">Home Score</th>
-                            <th scope="col">Away Score</th>
                             <th scope="col">Away Team</th>
+                            <th scope="col">Away Score</th>
+                            <th scope="col">Home Score</th>
+                            <th scope="col">Home Team</th>
                             <th scope="col">Code</th>
                             <th scope="col" colspan="3">Action</th>
                         </tr>
@@ -60,10 +60,10 @@
                         <tbody>
                         <tr th:each="game, iterationStatus : ${listGame}">
                             <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${game.home_club.name}"></td>
-                            <td th:text="${game.home_score}"></td>
-                            <td th:text="${game.away_score}"></td>
                             <td th:text="${game.away_club.name}"></td>
+                            <td th:text="${game.away_score}"></td>
+                            <td th:text="${game.home_score}"></td>
+                            <td th:text="${game.home_club.name}"></td>
                             <td th:text="${game.code}"></td>
                             <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/competition/game/detail(id=${game.id})}">Detail</a></td>
                             <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/competition/game/edit/(id=${game.id})}">Edit</a></td>

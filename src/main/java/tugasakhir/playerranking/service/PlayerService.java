@@ -1,5 +1,6 @@
 package tugasakhir.playerranking.service;
 
+import tugasakhir.playerranking.model.ClubModel;
 import tugasakhir.playerranking.model.PlayerModel;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface PlayerService {
     void addPlayer(PlayerModel newPlayer, Long positionId, Long clubId);
     void editPlayer(PlayerModel editedPlayer, Long positionId, Long clubId);
     void deletePlayer(PlayerModel player);
+    //PlayerModel getPlayerByNumberandByClub(String number, ClubModel player_club);
 }

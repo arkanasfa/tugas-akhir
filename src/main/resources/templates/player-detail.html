@@ -31,20 +31,38 @@
                     <table class="rounded table table-bordered">
                         <thead >
                         <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col" colspan="3">Action</th>
+                            <th scope="col">Game</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Minutes</th>
+                            <th scope="col">Field Goal</th>
+                            <th scope="col">Two Point</th>
+                            <th scope="col">Three Point</th>
+                            <th scope="col">Free Throw</th>
+                            <th scope="col">Rebound</th>
+                            <th scope="col">Assist</th>
+                            <th scope="col">Steal</th>
+                            <th scope="col">Block</th>
+                            <th scope="col">Turnover</th>
+                            <th scope="col">Foul</th>
                         </tr>
                         </thead>
-                        <!--<tbody>
-                        <tr th:each="club, iterationStatus : ${listClub}">
-                            <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${club.name}"></td>
-                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/club/detail(id=${club.id})}">Detail</a></td>
-                            <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/club/edit/(id=${club.id})}">Edit</a></td>
-                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/club/delete(id=${club.id})}">Delete</a></td>
+                        <tbody>
+                        <tr th:each="game, iterationStatus : ${gameLogs}">
+                            <td th:text="${game.game_id.away_club.name}+' vs '+${game.game_id.home_club.name}"></td>
+                            <td th:text="${game.game_id.date.Date}+'-'+${game.game_id.date.Month+1}+'-'+${game.game_id.date.Year+1900}"></td>
+                            <td th:text="${game.minute}"></td>
+                            <td th:text="${game.field_goal_made}+'-'+${game.field_goal_attempted}"></td>
+                            <td th:text="${game.two_point_made}+'-'+${game.two_point_attempted}"></td>
+                            <td th:text="${game.three_point_made}+'-'+${game.three_point_attempted}"></td>
+                            <td th:text="${game.free_throw_made}+'-'+${game.free_throw_attempted}"></td>
+                            <td th:text="${game.offRebound+game.defRebound}"></td>
+                            <td th:text="${game.assist}"></td>
+                            <td th:text="${game.steal}"></td>
+                            <td th:text="${game.block}"></td>
+                            <td th:text="${game.turnover}"></td>
+                            <td th:text="${game.foul}"></td>
                         </tr>
-                        </tbody>-->
+                        </tbody>
                     </table>
                     <h3 class="card-title">Game Logs</h3>
                     <table class="rounded table table-bordered">

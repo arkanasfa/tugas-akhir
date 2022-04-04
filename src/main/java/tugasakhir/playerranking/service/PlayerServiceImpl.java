@@ -71,4 +71,7 @@ public class PlayerServiceImpl implements PlayerService{
     public void deletePlayer(PlayerModel player){
         playerRepository.delete(player);
     }
+
+    //@Override
+    //public PlayerModel getPlayerByNumberandByClub(String number, ClubModel player_club) {return playerRepository.findByNumberandByClub(number,player_club).get();}
 }

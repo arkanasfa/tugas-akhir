@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tugasakhir.playerranking.model.ClubModel;
+import tugasakhir.playerranking.model.PlayerGameStatisticModel;
 import tugasakhir.playerranking.model.PlayerModel;
 import tugasakhir.playerranking.model.PositionModel;
 import tugasakhir.playerranking.service.ClubService;
@@ -97,7 +98,9 @@ public class PlayerController {
             @RequestParam(value="id") Long id,
             Model model){
         PlayerModel player = playerService.getPlayerById(id);
+        List<PlayerGameStatisticModel> gameLogs = player.getPlayergamestatisticList();
         model.addAttribute("player",player);
+        model.addAttribute("gameLogs",gameLogs);
         return "player-detail";
     }
 }

@@ -42,6 +42,11 @@ public class ClubModel implements Serializable{
     @JsonIgnore
     private List<GameModel> awaygameList;
 
+    @OneToMany(mappedBy = "club_id", fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private List<PlayerGameStatisticModel> playerclubgamestatisticList;
+
     public Long getId() {
         return id;
     }

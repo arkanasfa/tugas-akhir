@@ -19,8 +19,6 @@
         <h3 class="display-7" th:text="${game.away_club.name}+'  '+${game.away_score}+'-'+${game.home_score}+' '+${game.home_club.name}"></h3>
         <hr>
         <h5 class="display-10" th:text="'Game Date: '+${game.date.Date}+'-'+${game.date.Month+1}+'-'+${game.date.Year+1900}+' | Tip-Off: '+${game.tipoff.Hours}+':'+${game.tipoff.Minutes}"></h5>
-        <hr>
-        <a th:href="@{/competition/game/statistic/add(id=${game.id})}" class="link-light">+ Add game statistic</a>
     </div>
 </div>
 <div class="container">
@@ -29,6 +27,8 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">Away Player Statistic</h3>
+                    <hr>
+                    <a th:href="@{/competition/game/statistic/add(gameId=${game.id},clubId=${game.away_club.id})}" class="link-light">+ Add game statistic</a>
                     <table class="rounded table table-bordered">
                         <thead >
                         <tr>
@@ -47,14 +47,27 @@
                             <th scope="col">Foul</th>
                         </tr>
                         </thead>
-                        <!--<tbody>
-                        <tr th:each="participant, iterationStatus : ${listClub}">
-                            <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${participant.name}"></td>
+                        <tbody>
+                        <tr th:each="away, iterationStatus : ${awayGameStatistic}">
+                            <td th:text="${away.player_id.number}"></td>
+                            <td th:text="${away.player_id.name}"></td>
+                            <td th:text="${away.minute}"></td>
+                            <td th:text="${away.field_goal_made}+'-'+${away.field_goal_attempted}"></td>
+                            <td th:text="${away.two_point_made}+'-'+${away.two_point_attempted}"></td>
+                            <td th:text="${away.three_point_made}+'-'+${away.three_point_attempted}"></td>
+                            <td th:text="${away.free_throw_made}+'-'+${away.free_throw_attempted}"></td>
+                            <td th:text="${away.offRebound+away.defRebound}"></td>
+                            <td th:text="${away.assist}"></td>
+                            <td th:text="${away.steal}"></td>
+                            <td th:text="${away.block}"></td>
+                            <td th:text="${away.turnover}"></td>
+                            <td th:text="${away.foul}"></td>
                         </tr>
-                        </tbody>-->
+                        </tbody>
                     </table>
                     <h3 class="card-title">Home Player Statistic</h3>
+                    <hr>
+                    <a th:href="@{/competition/game/statistic/add(gameId=${game.id},clubId=${game.home_club.id})}" class="link-light">+ Add game statistic</a>
                     <table class="rounded table table-bordered">
                         <thead >
                         <tr>
@@ -81,9 +94,6 @@
                             <td th:text="${game.away_score}"></td>
                             <td th:text="${game.away_club.name}"></td>
                             <td th:text="${game.code}"></td>
-                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/competition/game/detail(id=${game.id})}">Detail</a></td>
-                            <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/competition/game/edit/(id=${game.id})}">Edit</a></td>
-                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/competition/game/delete(gameId=${game.id},competitionId=${competition.id})}">Delete</a></td>
                         </tr>
                         </tbody>-->
                     </table>

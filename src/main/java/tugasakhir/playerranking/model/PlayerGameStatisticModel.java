@@ -98,6 +98,12 @@ public class PlayerGameStatisticModel implements Serializable{
     @JsonIgnore
     private PlayerModel player_id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "club_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private ClubModel club_id;
+
     public Long getId() {
         return id;
     }
@@ -256,5 +262,13 @@ public class PlayerGameStatisticModel implements Serializable{
 
     public void setPlayer_id(PlayerModel player_id) {
         this.player_id = player_id;
+    }
+
+    public ClubModel getClub_id() {
+        return club_id;
+    }
+
+    public void setClub_id(ClubModel club_id) {
+        this.club_id = club_id;
     }
 }

@@ -5,13 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import tugasakhir.playerranking.model.ClubModel;
-import tugasakhir.playerranking.model.CompetitionModel;
-import tugasakhir.playerranking.model.GameModel;
-import tugasakhir.playerranking.model.PlayerModel;
+import org.springframework.web.multipart.MultipartFile;
+import tugasakhir.playerranking.model.*;
 import tugasakhir.playerranking.service.ClubService;
 import tugasakhir.playerranking.service.CompetitionService;
 import tugasakhir.playerranking.service.GameService;
+import tugasakhir.playerranking.service.PlayerGameStatisticService;
+import tugasakhir.playerranking.utility.CSVprocessor;
 
 import java.util.List;
 
@@ -27,6 +27,9 @@ public class CompetitionController {
 
     @Autowired
     GameService gameService;
+
+    @Autowired
+    PlayerGameStatisticService playerGameStatisticService;
 
     @GetMapping("/list")
     private String listCompetition(
@@ -201,10 +204,43 @@ public class CompetitionController {
             @RequestParam(value="id") Long id,
             Model model){
         GameModel game = gameService.findGameById(id);
+        List<PlayerGameStatisticModel> allGameStatistic = game.getPlayergamestatisticList();
+        List<PlayerGameStatisticModel> awayGameStatistic = playerGameStatisticService.getClubGameStatistic(game.getId(),game.getAway_club().getId());
+        List<PlayerGameStatisticModel> homeGameStatistic = playerGameStatisticService.getClubGameStatistic(game.getId(),game.getHome_club().getId());
         CompetitionModel competition = game.getGame_competition();
         model.addAttribute("game",game);
         model.addAttribute("competition",competition);
+        model.addAttribute("awayGameStatistic",awayGameStatistic);
+        model.addAttribute("homeGameStatistic",homeGameStatistic);
         return "game-detail";
+    }
+
+    @GetMapping("game/statistic/add")
+    private String addStatisticForm(
+            @RequestParam(value="clubId") Long clubId,
+            @RequestParam(value="gameId") Long gameId,
+            Model model){
+        GameModel game = gameService.findGameById(gameId);
+        ClubModel club = clubService.getClubById(clubId);
+        model.addAttribute("game",game);
+        model.addAttribute("club",club);
+        return "form-add-competition-game-statistic";
+    }
+
+    @PostMapping("game/statistic/add")
+    private String addStatisticSubmit(
+            @RequestParam(value="clubId") Long clubId,
+            @RequestParam(value="gameId") Long gameId,
+            @RequestParam(value="file")MultipartFile file,
+            Model model){
+        System.out.println(CSVprocessor.isCSV(file));
+        GameModel game = gameService.findGameById(gameId);
+        ClubModel club = clubService.getClubById(clubId);
+        List<PlayerModel> listPlayer = club.getPlayerList();
+        playerGameStatisticService.addPlayerGameStatistic(file,listPlayer,game,club);
+        model.addAttribute("game",game);
+        model.addAttribute("club",club);
+        return "statistic-added";
     }
 
 }
