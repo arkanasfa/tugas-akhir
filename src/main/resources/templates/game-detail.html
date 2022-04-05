@@ -26,7 +26,7 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Away Player Statistic</h3>
+                    <h3 class="card-title" th:text="${game.away_club.name}+' Player Statistic'"></h3>
                     <hr>
                     <a th:href="@{/competition/game/statistic/add(gameId=${game.id},clubId=${game.away_club.id})}" class="link-light">+ Add game statistic</a>
                     <table class="rounded table table-bordered">
@@ -65,7 +65,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <h3 class="card-title">Home Player Statistic</h3>
+                    <h3 class="card-title" th:text="${game.home_club.name}+' Player Statistic'"></h3>
                     <hr>
                     <a th:href="@{/competition/game/statistic/add(gameId=${game.id},clubId=${game.home_club.id})}" class="link-light">+ Add game statistic</a>
                     <table class="rounded table table-bordered">
@@ -87,15 +87,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!--<tr th:each="game, iterationStatus : ${listGame}">
-                            <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${game.home_club.name}"></td>
-                            <td th:text="${game.home_score}"></td>
-                            <td th:text="${game.away_score}"></td>
-                            <td th:text="${game.away_club.name}"></td>
-                            <td th:text="${game.code}"></td>
+                        <tr th:each="home, iterationStatus : ${homeGameStatistic}">
+                            <td th:text="${home.player_id.number}"></td>
+                            <td th:text="${home.player_id.name}"></td>
+                            <td th:text="${home.minute}"></td>
+                            <td th:text="${home.field_goal_made}+'-'+${home.field_goal_attempted}"></td>
+                            <td th:text="${home.two_point_made}+'-'+${home.two_point_attempted}"></td>
+                            <td th:text="${home.three_point_made}+'-'+${home.three_point_attempted}"></td>
+                            <td th:text="${home.free_throw_made}+'-'+${home.free_throw_attempted}"></td>
+                            <td th:text="${home.offRebound+home.defRebound}"></td>
+                            <td th:text="${home.assist}"></td>
+                            <td th:text="${home.steal}"></td>
+                            <td th:text="${home.block}"></td>
+                            <td th:text="${home.turnover}"></td>
+                            <td th:text="${home.foul}"></td>
                         </tr>
-                        </tbody>-->
+                        </tbody>
                     </table>
                     <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/competition/detail(id=${competition.id})}">Back</a>
                 </div>

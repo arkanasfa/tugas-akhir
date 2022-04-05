@@ -94,4 +94,12 @@ public class ClubModel implements Serializable{
     public void setAwaygameList(List<GameModel> awaygameList) {
         this.awaygameList = awaygameList;
     }
+
+    public List<PlayerGameStatisticModel> getPlayerclubgamestatisticList() {
+        return playerclubgamestatisticList;
+    }
+
+    public void setPlayerclubgamestatisticList(List<PlayerGameStatisticModel> playerclubgamestatisticList) {
+        this.playerclubgamestatisticList = playerclubgamestatisticList;
+    }
 }

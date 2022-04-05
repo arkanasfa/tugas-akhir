@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 import tugasakhir.playerranking.model.*;
-import tugasakhir.playerranking.service.ClubService;
-import tugasakhir.playerranking.service.CompetitionService;
-import tugasakhir.playerranking.service.GameService;
-import tugasakhir.playerranking.service.PlayerGameStatisticService;
+import tugasakhir.playerranking.service.*;
 import tugasakhir.playerranking.utility.CSVprocessor;
 
 import java.util.List;
@@ -30,6 +27,9 @@ public class CompetitionController {
 
     @Autowired
     PlayerGameStatisticService playerGameStatisticService;
+
+    @Autowired
+    PersonalStatisticService personalStatisticService;
 
     @GetMapping("/list")
     private String listCompetition(
@@ -233,11 +233,11 @@ public class CompetitionController {
             @RequestParam(value="gameId") Long gameId,
             @RequestParam(value="file")MultipartFile file,
             Model model){
-        System.out.println(CSVprocessor.isCSV(file));
         GameModel game = gameService.findGameById(gameId);
         ClubModel club = clubService.getClubById(clubId);
         List<PlayerModel> listPlayer = club.getPlayerList();
         playerGameStatisticService.addPlayerGameStatistic(file,listPlayer,game,club);
+        personalStatisticService.addPersonalStatistic(listPlayer,game);
         model.addAttribute("game",game);
         model.addAttribute("club",club);
         return "statistic-added";

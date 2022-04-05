@@ -20,6 +20,7 @@ public class PlayerGameStatisticServiceImpl implements PlayerGameStatisticServic
     @Autowired
     PlayerGameStatisticRepository playerGameStatisticRepository;
 
+
     @Override
     public void addPlayerGameStatistic(MultipartFile file, List<PlayerModel> listPlayer, GameModel game, ClubModel club){
         try{
@@ -33,6 +34,16 @@ public class PlayerGameStatisticServiceImpl implements PlayerGameStatisticServic
     @Override
     public List<PlayerGameStatisticModel> getClubGameStatistic(Long game_id,Long club_id){
         return playerGameStatisticRepository.findClubGameStatistic(game_id,club_id);
+    }
+
+    @Override
+    public PlayerGameStatisticModel getPlayerGameStatistic(Long game_id,Long player_id){
+        return playerGameStatisticRepository.findPlayerGameStatistic(game_id,player_id).get();
+    }
+
+    @Override
+    public Boolean checkPlayerGameStatistic(Long game_id,Long player_id){
+        return playerGameStatisticRepository.findPlayerGameStatistic(game_id,player_id).isPresent();
     }
 
 }

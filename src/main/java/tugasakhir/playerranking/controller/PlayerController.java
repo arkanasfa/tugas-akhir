@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import tugasakhir.playerranking.model.ClubModel;
-import tugasakhir.playerranking.model.PlayerGameStatisticModel;
-import tugasakhir.playerranking.model.PlayerModel;
-import tugasakhir.playerranking.model.PositionModel;
+import tugasakhir.playerranking.model.*;
 import tugasakhir.playerranking.service.ClubService;
 import tugasakhir.playerranking.service.PlayerService;
 import tugasakhir.playerranking.service.PositionService;
@@ -99,8 +96,10 @@ public class PlayerController {
             Model model){
         PlayerModel player = playerService.getPlayerById(id);
         List<PlayerGameStatisticModel> gameLogs = player.getPlayergamestatisticList();
+        List<PersonalStatisticModel> personalStats = player.getPersonalstatisticList();
         model.addAttribute("player",player);
         model.addAttribute("gameLogs",gameLogs);
+        model.addAttribute("personalStats",personalStats);
         return "player-detail";
     }
 }

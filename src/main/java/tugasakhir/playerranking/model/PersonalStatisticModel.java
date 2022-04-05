@@ -1,6 +1,7 @@
 package tugasakhir.playerranking.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -19,46 +20,50 @@ public class PersonalStatisticModel implements Serializable{
     private Long id;
 
     @NotNull
-    @Column(name="ppg",nullable = false)
-    private Float ppg;
+    @Column(name="game",nullable = false, columnDefinition = "integer default 0")
+    private Integer game=0;
 
     @NotNull
-    @Column(name="fgmpg",nullable = false)
-    private Float fgmpg;
+    @Column(name="ppg",nullable = false, columnDefinition = "double precision default 0")
+    private Double ppg=0.0;
 
     @NotNull
-    @Column(name="apg",nullable = false)
-    private Float apg;
+    @Column(name="fgmpg",nullable = false, columnDefinition = "double precision default 0")
+    private Double fgmpg=0.0;
 
     @NotNull
-    @Column(name="rpg",nullable = false)
-    private Float rpg;
+    @Column(name="apg",nullable = false, columnDefinition = "double precision default 0")
+    private Double apg=0.0;
 
     @NotNull
-    @Column(name="blkpg",nullable = false)
-    private Float blkpg;
+    @Column(name="rpg",nullable = false, columnDefinition = "double precision default 0")
+    private Double rpg=0.0;
 
     @NotNull
-    @Column(name="stlpg",nullable = false)
-    private Float stlpg;
+    @Column(name="blkpg",nullable = false, columnDefinition = "double precision default 0")
+    private Double blkpg=0.0;
 
     @NotNull
-    @Column(name="ftmpg",nullable = false)
-    private Float ftmpg;
+    @Column(name="stlpg",nullable = false, columnDefinition = "double precision default 0")
+    private Double stlpg=0.0;
 
     @NotNull
-    @Column(name="flspg",nullable = false)
-    private Float flspg;
+    @Column(name="ftmpg",nullable = false, columnDefinition = "double precision default 0")
+    private Double ftmpg=0.0;
 
     @NotNull
-    @Column(name="topg",nullable = false)
-    private Float topg;
+    @Column(name="flspg",nullable = false, columnDefinition = "double precision default 0")
+    private Double flspg=0.0;
+
+    @NotNull
+    @Column(name="topg",nullable = false, columnDefinition = "double precision default 0")
+    private Double topg=0.0;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "player_id", nullable = false)
+    @JoinColumn(name = "player", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private PlayerModel player_id;
+    private PlayerModel player;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "competition_id", nullable = false)
@@ -74,84 +79,92 @@ public class PersonalStatisticModel implements Serializable{
         this.id = id;
     }
 
-    public Float getPpg() {
+    public Integer getGame() {
+        return game;
+    }
+
+    public void setGame(Integer game) {
+        this.game = game;
+    }
+
+    public Double getPpg() {
         return ppg;
     }
 
-    public void setPpg(Float ppg) {
+    public void setPpg(Double ppg) {
         this.ppg = ppg;
     }
 
-    public Float getFgmpg() {
+    public Double getFgmpg() {
         return fgmpg;
     }
 
-    public void setFgmpg(Float fgmpg) {
+    public void setFgmpg(Double fgmpg) {
         this.fgmpg = fgmpg;
     }
 
-    public Float getApg() {
+    public Double getApg() {
         return apg;
     }
 
-    public void setApg(Float apg) {
+    public void setApg(Double apg) {
         this.apg = apg;
     }
 
-    public Float getRpg() {
+    public Double getRpg() {
         return rpg;
     }
 
-    public void setRpg(Float rpg) {
+    public void setRpg(Double rpg) {
         this.rpg = rpg;
     }
 
-    public Float getBlkpg() {
+    public Double getBlkpg() {
         return blkpg;
     }
 
-    public void setBlkpg(Float blkpg) {
+    public void setBlkpg(Double blkpg) {
         this.blkpg = blkpg;
     }
 
-    public Float getStlpg() {
+    public Double getStlpg() {
         return stlpg;
     }
 
-    public void setStlpg(Float stlpg) {
+    public void setStlpg(Double stlpg) {
         this.stlpg = stlpg;
     }
 
-    public Float getFtmpg() {
+    public Double getFtmpg() {
         return ftmpg;
     }
 
-    public void setFtmpg(Float ftmpg) {
+    public void setFtmpg(Double ftmpg) {
         this.ftmpg = ftmpg;
     }
 
-    public Float getFlspg() {
+    public Double getFlspg() {
         return flspg;
     }
 
-    public void setFlspg(Float flspg) {
+    public void setFlspg(Double flspg) {
         this.flspg = flspg;
     }
 
-    public Float getTopg() {
+    public Double getTopg() {
         return topg;
     }
 
-    public void setTopg(Float topg) {
+    public void setTopg(Double topg) {
         this.topg = topg;
     }
 
     public PlayerModel getPlayer_id() {
-        return player_id;
+        return player;
     }
 
-    public void setPlayer_id(PlayerModel player_id) {
-        this.player_id = player_id;
+    public void setPlayer_id(PlayerModel player) {
+        this.player = player;
     }
 
     public CompetitionModel getCompetition_id() {

@@ -37,7 +37,6 @@ public class CSVprocessor {
             for(CSVRecord csvRecord:csvRecords){
                 PlayerGameStatisticModel playerGameStatistic = new PlayerGameStatisticModel();
                 PlayerModel player = getPlayerFromList(listPlayer,csvRecord.get("NO."));
-                playerGameStatistic.setPlayer_id(player);
                 playerGameStatistic.setMinute(csvRecord.get("MINS"));
                 playerGameStatistic.setPoint(Integer.parseInt(csvRecord.get("PTS")));
                 playerGameStatistic.setField_goal_made(Integer.parseInt(csvRecord.get("FG").substring(0,1)));
@@ -57,6 +56,7 @@ public class CSVprocessor {
                 playerGameStatistic.setFoul(Integer.parseInt(csvRecord.get("PF")));
                 playerGameStatistic.setGame_id(game);
                 playerGameStatistic.setClub_id(club);
+                playerGameStatistic.setPlayer_id(player);
                 statistics.add(playerGameStatistic);
             }
             parser.close();

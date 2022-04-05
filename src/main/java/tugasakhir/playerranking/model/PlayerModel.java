@@ -64,7 +64,7 @@ public class PlayerModel implements Serializable{
     @JsonIgnore
     private List<PlayerGameStatisticModel> playergamestatisticList;
 
-    @OneToMany(mappedBy = "player_id", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "player", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private List<PersonalStatisticModel> personalstatisticList;

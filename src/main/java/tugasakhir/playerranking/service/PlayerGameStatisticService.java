@@ -11,4 +11,6 @@ import java.util.List;
 public interface PlayerGameStatisticService {
     void addPlayerGameStatistic(MultipartFile file, List<PlayerModel> listPlayer, GameModel game, ClubModel club);
     List<PlayerGameStatisticModel> getClubGameStatistic(Long game_id,Long club_id);
+    PlayerGameStatisticModel getPlayerGameStatistic(Long game_id, Long player_id);
+    Boolean checkPlayerGameStatistic(Long game_id, Long player_id);
 }
