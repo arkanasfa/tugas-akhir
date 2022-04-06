@@ -6,6 +6,7 @@ import tugasakhir.playerranking.model.*;
 import tugasakhir.playerranking.repository.PersonalStatisticRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,19 +19,16 @@ public class PersonalStatisticServiceImpl implements PersonalStatisticService{
     PlayerGameStatisticService playerGameStatisticService;
 
     @Override
-    public void addPersonalStatistic(List<PlayerModel> listPlayer, GameModel game) {
+    public List<PersonalStatisticModel> addPersonalStatistic(List<PlayerModel> listPlayer, GameModel game) {
+        List<PersonalStatisticModel> listPersonalStatistic = new ArrayList<>();
         for(PlayerModel player : listPlayer){
-            if(personalStatisticRepository.findPersonalStatisticByCompetitionIdandPlayerId(game.getGame_competition().getId(),player.getId()).isPresent()){
-                PersonalStatisticModel personalStatistic = personalStatisticRepository.findPersonalStatisticByCompetitionIdandPlayerId(game.getGame_competition().getId(),player.getId()).get();
-                personalStatisticRepository.save(calculatePersonalStatistic(personalStatistic,game,player));
+            PersonalStatisticModel personalStatistic = getPersonalStatisticByCompetitionIdandPlayerId(game.getGame_competition().getId(),player.getId());
+            if(playerGameStatisticService.checkPlayerGameStatistic(game.getId(), player.getId())){
+                savePersonalStatistic(calculatePersonalStatistic(personalStatistic,game,player));
             }
-            else if(playerGameStatisticService.checkPlayerGameStatistic(game.getId(), player.getId())){
-                PersonalStatisticModel newPersonalStatistic = new PersonalStatisticModel();
-                newPersonalStatistic.setPlayer_id(player);
-                newPersonalStatistic.setCompetition_id(game.getGame_competition());
-                personalStatisticRepository.save(calculatePersonalStatistic(newPersonalStatistic,game,player));
-            }
+            listPersonalStatistic.add(personalStatistic);
         }
+        return listPersonalStatistic;
     }
 
     private PersonalStatisticModel calculatePersonalStatistic(PersonalStatisticModel personalStatistic,GameModel game, PlayerModel player){
@@ -46,5 +44,20 @@ public class PersonalStatisticServiceImpl implements PersonalStatisticService{
         personalStatistic.setFlspg((personalStatistic.getFlspg()+gameStatistic.getFoul())/personalStatistic.getGame());
         personalStatistic.setTopg((personalStatistic.getTopg()+gameStatistic.getTurnover())/personalStatistic.getGame());
         return personalStatistic;
+    }
+
+    @Override
+    public Boolean checkPersonalStatisticByCompetitionIdandPlayerId(Long competitionId, Long playerId){
+        return personalStatisticRepository.findPersonalStatisticByCompetitionIdandPlayerId(competitionId,playerId).isPresent();
+    }
+
+    @Override
+    public PersonalStatisticModel getPersonalStatisticByCompetitionIdandPlayerId(Long competitionId, Long playerId){
+        return  personalStatisticRepository.findPersonalStatisticByCompetitionIdandPlayerId(competitionId,playerId).get();
+    }
+
+    @Override
+    public void savePersonalStatistic(PersonalStatisticModel personalStatistic){
+        personalStatisticRepository.save(personalStatistic);
     }
 }

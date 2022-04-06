@@ -31,6 +31,9 @@ public class CompetitionController {
     @Autowired
     PersonalStatisticService personalStatisticService;
 
+    @Autowired
+    RankService rankService;
+
     @GetMapping("/list")
     private String listCompetition(
             Model model){
@@ -155,7 +158,6 @@ public class CompetitionController {
             @RequestParam(value="home_clubId") Long home_id,
             @RequestParam(value="away_clubId") Long away_id,
             Model model) {
-        System.out.println(newGame.getId());
         String gameCode = competitionService.addGame(newGame,home_id,away_id);
         model.addAttribute("id",newGame.getGame_competition().getId());
         model.addAttribute("name", newGame.getGame_competition().getName());
@@ -237,7 +239,8 @@ public class CompetitionController {
         ClubModel club = clubService.getClubById(clubId);
         List<PlayerModel> listPlayer = club.getPlayerList();
         playerGameStatisticService.addPlayerGameStatistic(file,listPlayer,game,club);
-        personalStatisticService.addPersonalStatistic(listPlayer,game);
+        List<PersonalStatisticModel> listPersonalStatistic = personalStatisticService.addPersonalStatistic(listPlayer,game);
+        rankService.rankPlayer(listPersonalStatistic);
         model.addAttribute("game",game);
         model.addAttribute("club",club);
         return "statistic-added";

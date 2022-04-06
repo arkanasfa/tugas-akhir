@@ -20,43 +20,43 @@ public class PersonalStatisticModel implements Serializable{
     private Long id;
 
     @NotNull
-    @Column(name="game",nullable = false, columnDefinition = "integer default 0")
+    @Column(name="game",nullable = false)
     private Integer game=0;
 
     @NotNull
-    @Column(name="ppg",nullable = false, columnDefinition = "double precision default 0")
+    @Column(name="ppg",nullable = false)
     private Double ppg=0.0;
 
     @NotNull
-    @Column(name="fgmpg",nullable = false, columnDefinition = "double precision default 0")
+    @Column(name="fgmpg",nullable = false)
     private Double fgmpg=0.0;
 
     @NotNull
-    @Column(name="apg",nullable = false, columnDefinition = "double precision default 0")
+    @Column(name="apg",nullable = false)
     private Double apg=0.0;
 
     @NotNull
-    @Column(name="rpg",nullable = false, columnDefinition = "double precision default 0")
+    @Column(name="rpg",nullable = false)
     private Double rpg=0.0;
 
     @NotNull
-    @Column(name="blkpg",nullable = false, columnDefinition = "double precision default 0")
+    @Column(name="blkpg",nullable = false)
     private Double blkpg=0.0;
 
     @NotNull
-    @Column(name="stlpg",nullable = false, columnDefinition = "double precision default 0")
+    @Column(name="stlpg",nullable = false)
     private Double stlpg=0.0;
 
     @NotNull
-    @Column(name="ftmpg",nullable = false, columnDefinition = "double precision default 0")
+    @Column(name="ftmpg",nullable = false)
     private Double ftmpg=0.0;
 
     @NotNull
-    @Column(name="flspg",nullable = false, columnDefinition = "double precision default 0")
+    @Column(name="flspg",nullable = false)
     private Double flspg=0.0;
 
     @NotNull
-    @Column(name="topg",nullable = false, columnDefinition = "double precision default 0")
+    @Column(name="topg",nullable = false)
     private Double topg=0.0;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -70,6 +70,9 @@ public class PersonalStatisticModel implements Serializable{
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private CompetitionModel competition_id;
+
+    @OneToOne(mappedBy = "personalStatistic")
+    private RankModel rank;
 
     public Long getId() {
         return id;
@@ -173,5 +176,21 @@ public class PersonalStatisticModel implements Serializable{
 
     public void setCompetition_id(CompetitionModel competition_id) {
         this.competition_id = competition_id;
+    }
+
+    public PlayerModel getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(PlayerModel player) {
+        this.player = player;
+    }
+
+    public RankModel getRank() {
+        return rank;
+    }
+
+    public void setRank(RankModel rank) {
+        this.rank = rank;
     }
 }

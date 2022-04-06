@@ -2,9 +2,7 @@ package tugasakhir.playerranking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tugasakhir.playerranking.model.ClubModel;
-import tugasakhir.playerranking.model.CompetitionModel;
-import tugasakhir.playerranking.model.GameModel;
+import tugasakhir.playerranking.model.*;
 import tugasakhir.playerranking.repository.CompetitionRepository;
 import tugasakhir.playerranking.repository.GameRepository;
 
@@ -27,6 +25,9 @@ public class CompetitionServiceImpl implements CompetitionService{
 
     @Autowired
     GameService gameService;
+
+    @Autowired
+    PersonalStatisticService personalStatisticService;
 
     @Override
     public List<CompetitionModel> getCompetitionList(){return competitionRepository.findAll();}
@@ -57,7 +58,18 @@ public class CompetitionServiceImpl implements CompetitionService{
         List<ClubModel> oldParticipant = targetCompetition.getParticipant_club();
         oldParticipant.add(participant);
         targetCompetition.setParticipant_club(oldParticipant);
+        List<PlayerModel> playerList = participant.getPlayerList();
+        createPersonalStatistic(playerList,targetCompetition);
         competitionRepository.save(targetCompetition);
+    }
+
+    private void createPersonalStatistic(List<PlayerModel> playerList,CompetitionModel competition){
+        for(PlayerModel player:playerList){
+            PersonalStatisticModel newPersonalStatistic = new PersonalStatisticModel();
+            newPersonalStatistic.setPlayer_id(player);
+            newPersonalStatistic.setCompetition_id(competition);
+            personalStatisticService.savePersonalStatistic(newPersonalStatistic);
+        }
     }
 
     @Override
