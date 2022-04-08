@@ -238,9 +238,11 @@ public class CompetitionController {
         GameModel game = gameService.findGameById(gameId);
         ClubModel club = clubService.getClubById(clubId);
         List<PlayerModel> listPlayer = club.getPlayerList();
-        playerGameStatisticService.addPlayerGameStatistic(file,listPlayer,game,club);
+        List<PlayerGameStatisticModel> listPlayerGameStatistic =  playerGameStatisticService.addPlayerGameStatistic(file,listPlayer,game,club);
+        gameService.addGameScore(game,club,listPlayerGameStatistic);
         List<PersonalStatisticModel> listPersonalStatistic = personalStatisticService.addPersonalStatistic(listPlayer,game);
-        rankService.rankPlayer(listPersonalStatistic);
+        List<RankModel> listRank = rankService.createListOfRank(listPersonalStatistic);
+        rankService.rankPlayer(listPersonalStatistic,listRank);
         model.addAttribute("game",game);
         model.addAttribute("club",club);
         return "statistic-added";

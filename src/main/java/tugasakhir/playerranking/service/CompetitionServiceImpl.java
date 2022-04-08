@@ -18,9 +18,6 @@ public class CompetitionServiceImpl implements CompetitionService{
     CompetitionRepository competitionRepository;
 
     @Autowired
-    GameRepository gameRepository;
-
-    @Autowired
     ClubService clubService;
 
     @Autowired
@@ -92,7 +89,7 @@ public class CompetitionServiceImpl implements CompetitionService{
         newGame.setAway_score(Integer.valueOf(0));
         String code = gameCodeGenerator(newGame,home_clubId,away_clubId);
         newGame.setCode(code);
-        gameRepository.save(newGame);
+        gameService.saveGame(newGame);
         return code;
     }
 
@@ -108,7 +105,7 @@ public class CompetitionServiceImpl implements CompetitionService{
         GameModel targetGame = gameService.findGameById(game.getId());
         targetGame.setDate(game.getDate());
         targetGame.setTipoff(game.getTipoff());
-        gameRepository.save(targetGame);
+        gameService.saveGame(targetGame);
         return targetGame.getCode();
     }
 

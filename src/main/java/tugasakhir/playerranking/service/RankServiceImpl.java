@@ -2,10 +2,7 @@ package tugasakhir.playerranking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tugasakhir.playerranking.model.PersonalStatisticModel;
-import tugasakhir.playerranking.model.PlayerModel;
-import tugasakhir.playerranking.model.RankModel;
-import tugasakhir.playerranking.model.WeightModel;
+import tugasakhir.playerranking.model.*;
 import tugasakhir.playerranking.repository.RankRepository;
 
 import javax.transaction.Transactional;
@@ -19,13 +16,22 @@ public class RankServiceImpl implements RankService{
     @Autowired
     RankRepository rankRepository;
 
+    @Autowired
+    WeightService weightService;
+
+    @Autowired
+    PersonalStatisticService personalStatisticService;
+
     @Override
-    public void rankPlayer(List<PersonalStatisticModel> listPersonalStatistic){
-        List<RankModel> listRank = createListOfRank(listPersonalStatistic);
+    public void rankPlayer(List<PersonalStatisticModel> listPersonalStatistic, List<RankModel> listRank){
         List<List<Double>> evaluationMatrix = createMatrix(listPersonalStatistic);
+        printMatrix(evaluationMatrix);
         List<List<Double>> normalizedMatrix = normalizeMatrix(evaluationMatrix);
+        printMatrix(normalizedMatrix);
         List<List<Double>> weightedMatrix = weightMatrix(normalizedMatrix,listRank);
+        printMatrix(weightedMatrix);
         List<List<Double>> idealSolutionMatrix = createIdealSolutionMatrix(weightedMatrix);
+        printMatrix(idealSolutionMatrix);
         List<Double> besteuclideanDistance = calculateBestEuclideanDistance(weightedMatrix,idealSolutionMatrix);
         List<Double> worsteuclideanDistance = calculateWorstEuclideanDistance(weightedMatrix,idealSolutionMatrix);
         List<Double> performanceScore = calculatePerformanceScore(besteuclideanDistance,worsteuclideanDistance);
@@ -43,7 +49,9 @@ public class RankServiceImpl implements RankService{
                 WeightModel weight = new WeightModel();
                 rank.setPersonalStatistic(personalStatistic);
                 rank.setWeight(weight);
+                weightService.addWeight(weight);
                 addRank(rank);
+                listRank.add(rank);
             }
             else{
                 listRank.add(personalStatistic.getRank());
@@ -96,6 +104,7 @@ public class RankServiceImpl implements RankService{
             }
             divisor.add(sqrt(squareValue));
         }
+        System.out.println(divisor);
         return divisor;
     }
 
@@ -129,47 +138,87 @@ public class RankServiceImpl implements RankService{
 
     private List<Double> calculateBestEuclideanDistance(List<List<Double>> weightedMatrix, List<List<Double>> idealSolutionMatrix){
         List<Double> bestEuclideanDistance = new ArrayList<>();
-        Double calculation = 0.0;
         for(int row=0;row<weightedMatrix.size();row++){
+           Double calculation = 0.0;
            for(int colBen=0;colBen<7;colBen++){
-               calculation=calculation+Math.pow(weightedMatrix.get(row).get(colBen)-idealSolutionMatrix.get(0).get(colBen),2);
+               calculation=calculation+(Math.pow(weightedMatrix.get(row).get(colBen)-idealSolutionMatrix.get(0).get(colBen),2));
             }
            for(int colCost=7;colCost<9;colCost++){
-               calculation=calculation+Math.pow(weightedMatrix.get(row).get(colCost)-idealSolutionMatrix.get(1).get(colCost),2);
+               calculation=calculation+(Math.pow(weightedMatrix.get(row).get(colCost)-idealSolutionMatrix.get(1).get(colCost),2));
            }
            bestEuclideanDistance.add(sqrt(calculation));
         }
+        System.out.println(bestEuclideanDistance);
         return bestEuclideanDistance;
     }
 
     private List<Double> calculateWorstEuclideanDistance(List<List<Double>> weightedMatrix, List<List<Double>> idealSolutionMatrix){
         List<Double> worstEuclideanDistance = new ArrayList<>();
-        Double calculation = 0.0;
         for(int row=0;row<weightedMatrix.size();row++){
+            Double calculation = 0.0;
             for(int colBen=0;colBen<7;colBen++){
-                calculation=calculation+Math.pow(weightedMatrix.get(row).get(colBen)-idealSolutionMatrix.get(1).get(colBen),2);
+                calculation=calculation+(Math.pow(weightedMatrix.get(row).get(colBen)-idealSolutionMatrix.get(1).get(colBen),2));
             }
             for(int colCost=7;colCost<9;colCost++){
-                calculation=calculation+Math.pow(weightedMatrix.get(row).get(colCost)-idealSolutionMatrix.get(0).get(colCost),2);
+                calculation=calculation+(Math.pow(weightedMatrix.get(row).get(colCost)-idealSolutionMatrix.get(0).get(colCost),2));
             }
             worstEuclideanDistance.add(sqrt(calculation));
         }
+        System.out.println(worstEuclideanDistance);
         return worstEuclideanDistance;
     }
 
     private List<Double> calculatePerformanceScore(List<Double> bestEuclideanDistance, List<Double> worstEuclideanDistance){
         List<Double> performanceScore = new ArrayList<>();
         for(int i=0;i<bestEuclideanDistance.size();i++){
-            performanceScore.add(bestEuclideanDistance.get(i)/(bestEuclideanDistance.get(i)+worstEuclideanDistance.get(i)));
+            performanceScore.add(worstEuclideanDistance.get(i)/(bestEuclideanDistance.get(i)+worstEuclideanDistance.get(i)));
         }
         return performanceScore;
     }
+
 
     public void setRanking(List<RankModel> listRank,List<Double> performanceScore){
         for(int i=0;i<listRank.size();i++){
             listRank.get(i).setPerformance_score(performanceScore.get(i));
         }
         addAllRank(listRank);
+    }
+
+    @Override
+    public List<RankModel> getRankingByPlayerAndCompetition(List<PlayerModel> listPlayer, CompetitionModel competition){
+        List<RankModel> listRank = new ArrayList<>();
+        for(PlayerModel player: listPlayer){
+            listRank.add(personalStatisticService.getPersonalStatisticByCompetitionIdandPlayerId(competition.getId(),player.getId()).getRank());
+        }
+        return listRank;
+    }
+
+    @Override
+    public List<RankModel> sortRank(List<RankModel> listRank){
+        List<Double> value = new ArrayList<>();
+        List<RankModel> sortedRank = new ArrayList<>();
+        Map<Double,RankModel> mapValue = new HashMap<Double,RankModel>();
+        for(RankModel rank: listRank){
+            value.add(rank.getPerformance_score());
+            mapValue.put(rank.getPerformance_score(),rank);
+        }
+
+        for(int i=0;i<listRank.size();i++){
+            sortedRank.add(mapValue.get(Collections.max(value)));
+            value.remove(Collections.max(value));
+        }
+        return sortedRank;
+    }
+
+    public void printMatrix(List<List<Double>> matrix){
+        System.out.println("matrix: ");
+        for(int row=0;row<matrix.size();row++){
+           for(int col=0;col<matrix.get(row).size();col++){
+               System.out.print(matrix.get(row).get(col));
+               System.out.print(" | ");
+            }
+           System.out.println();
+        }
     }
 
 

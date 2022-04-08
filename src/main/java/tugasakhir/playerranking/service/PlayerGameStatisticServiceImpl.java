@@ -22,10 +22,11 @@ public class PlayerGameStatisticServiceImpl implements PlayerGameStatisticServic
 
 
     @Override
-    public void addPlayerGameStatistic(MultipartFile file, List<PlayerModel> listPlayer, GameModel game, ClubModel club){
+    public List<PlayerGameStatisticModel> addPlayerGameStatistic(MultipartFile file, List<PlayerModel> listPlayer, GameModel game, ClubModel club){
         try{
             List<PlayerGameStatisticModel> statistic = CSVprocessor.csvToPlayerGameStatisticModel(file.getInputStream(),listPlayer,game,club);
             playerGameStatisticRepository.saveAll(statistic);
+            return statistic;
         } catch(IOException e){
                 throw new RuntimeException("error: "+e.getMessage());
             }

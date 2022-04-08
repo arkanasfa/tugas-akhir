@@ -13,7 +13,7 @@ public class RankModel implements Serializable {
 
     @NotNull
     @Column(name = "performance_score",nullable = false)
-    private Double performance_score;
+    private Double performance_score=0.0;
 
     @OneToOne
     @JoinColumn(name="personal_statistic_id",referencedColumnName = "id")

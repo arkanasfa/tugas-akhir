@@ -21,43 +21,79 @@ public class PersonalStatisticModel implements Serializable{
 
     @NotNull
     @Column(name="game",nullable = false)
-    private Integer game=0;
+    private Double game= 0.0;
 
     @NotNull
     @Column(name="ppg",nullable = false)
-    private Double ppg=0.0;
+    private Double ppg= 0.0;
 
     @NotNull
     @Column(name="fgmpg",nullable = false)
-    private Double fgmpg=0.0;
+    private Double fgmpg= 0.0;
 
     @NotNull
     @Column(name="apg",nullable = false)
-    private Double apg=0.0;
+    private Double apg= 0.0;
 
     @NotNull
     @Column(name="rpg",nullable = false)
-    private Double rpg=0.0;
+    private Double rpg= 0.0;
 
     @NotNull
     @Column(name="blkpg",nullable = false)
-    private Double blkpg=0.0;
+    private Double blkpg= 0.0;
 
     @NotNull
     @Column(name="stlpg",nullable = false)
-    private Double stlpg=0.0;
+    private Double stlpg= 0.0;
 
     @NotNull
     @Column(name="ftmpg",nullable = false)
-    private Double ftmpg=0.0;
+    private Double ftmpg= 0.0;
 
     @NotNull
     @Column(name="flspg",nullable = false)
-    private Double flspg=0.0;
+    private Double flspg= 0.0;
 
     @NotNull
     @Column(name="topg",nullable = false)
-    private Double topg=0.0;
+    private Double topg= 0.0;
+
+    @NotNull
+    @Column(name="totalPoints",nullable = false)
+    private Double points= 0.0;
+
+    @NotNull
+    @Column(name="totalFieldGoal",nullable = false)
+    private Double fieldGoals= 0.0;
+
+    @NotNull
+    @Column(name="totalFreeThrow",nullable = false)
+    private Double freeThrows= 0.0;
+
+    @NotNull
+    @Column(name="totalAssist",nullable = false)
+    private Double assists= 0.0;
+
+    @NotNull
+    @Column(name="totalRebound",nullable = false)
+    private Double rebounds= 0.0;
+
+    @NotNull
+    @Column(name="totalBlock",nullable = false)
+    private Double blocks= 0.0;
+
+    @NotNull
+    @Column(name="totalSteal",nullable = false)
+    private Double steals= 0.0;
+
+    @NotNull
+    @Column(name="totalFoul",nullable = false)
+    private Double fouls= 0.0;
+
+    @NotNull
+    @Column(name="totalTurnover",nullable = false)
+    private Double turnovers= 0.0;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player", nullable = false)
@@ -82,11 +118,11 @@ public class PersonalStatisticModel implements Serializable{
         this.id = id;
     }
 
-    public Integer getGame() {
+    public Double getGame() {
         return game;
     }
 
-    public void setGame(Integer game) {
+    public void setGame(Double game) {
         this.game = game;
     }
 
@@ -192,5 +228,77 @@ public class PersonalStatisticModel implements Serializable{
 
     public void setRank(RankModel rank) {
         this.rank = rank;
+    }
+
+    public Double getPoints() {
+        return points;
+    }
+
+    public void setPoints(Double points) {
+        this.points = points;
+    }
+
+    public Double getFieldGoals() {
+        return fieldGoals;
+    }
+
+    public void setFieldGoals(Double fieldGoals) {
+        this.fieldGoals = fieldGoals;
+    }
+
+    public Double getFreeThrows() {
+        return freeThrows;
+    }
+
+    public void setFreeThrows(Double freeThrows) {
+        this.freeThrows = freeThrows;
+    }
+
+    public Double getAssists() {
+        return assists;
+    }
+
+    public void setAssists(Double assists) {
+        this.assists = assists;
+    }
+
+    public Double getRebounds() {
+        return rebounds;
+    }
+
+    public void setRebounds(Double rebounds) {
+        this.rebounds = rebounds;
+    }
+
+    public Double getBlocks() {
+        return blocks;
+    }
+
+    public void setBlocks(Double blocks) {
+        this.blocks = blocks;
+    }
+
+    public Double getSteals() {
+        return steals;
+    }
+
+    public void setSteals(Double steals) {
+        this.steals = steals;
+    }
+
+    public Double getFouls() {
+        return fouls;
+    }
+
+    public void setFouls(Double fouls) {
+        this.fouls = fouls;
+    }
+
+    public Double getTurnovers() {
+        return turnovers;
+    }
+
+    public void setTurnovers(Double turnovers) {
+        this.turnovers = turnovers;
     }
 }
