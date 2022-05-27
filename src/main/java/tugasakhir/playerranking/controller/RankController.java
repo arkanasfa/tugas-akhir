@@ -16,6 +16,7 @@ import tugasakhir.playerranking.service.ClubService;
 import tugasakhir.playerranking.service.CompetitionService;
 import tugasakhir.playerranking.service.RankService;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -50,8 +51,8 @@ public class RankController {
         List<PlayerModel> listPlayer = clubService.getClubById(clubId).getPlayerList();
         CompetitionModel competition = competitionService.getCompetitionById(competitionId);
         List<RankModel> listRank = rankService.getRankingByPlayerAndCompetition(listPlayer,competition);
-        List<RankModel> sortedRank = rankService.sortRank(listRank);
-        model.addAttribute("sortedRank",sortedRank);
+        Collections.sort(listRank, (RankModel r1, RankModel r2) -> r2.getPerformance_score().compareTo(r1.getPerformance_score()));
+        model.addAttribute("listRank",listRank);
         model.addAttribute("club",clubService.getClubById(clubId));
         model.addAttribute("competition",competition);
         return "rank-list";

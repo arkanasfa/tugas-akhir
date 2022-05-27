@@ -1,6 +1,10 @@
 package tugasakhir.playerranking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tugasakhir.playerranking.model.ClubModel;
 import tugasakhir.playerranking.model.PlayerModel;
@@ -8,7 +12,9 @@ import tugasakhir.playerranking.model.PositionModel;
 import tugasakhir.playerranking.repository.PlayerRepository;
 
 import javax.transaction.Transactional;
+import java.text.Collator;
 import java.time.*;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -34,11 +40,16 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public void addPlayer(PlayerModel newPlayer, Long positionId, Long clubId) {
+        if(clubId==-1){
+            newPlayer.setPlayer_club(null);
+        }
+        else{
+            ClubModel club = clubService.getClubById(clubId);
+            newPlayer.setPlayer_club(club);
+        }
         PositionModel position = positionService.getPositionById(positionId);
-        ClubModel club = clubService.getClubById(clubId);
-        Integer age = generateAge(newPlayer.getBirthday());
-        newPlayer.setPlayer_club(club);
         newPlayer.setPlayer_position(position);
+        Integer age = generateAge(newPlayer.getBirthday());
         newPlayer.setAge(age);
         playerRepository.save(newPlayer);}
 
@@ -46,7 +57,13 @@ public class PlayerServiceImpl implements PlayerService{
     public void editPlayer(PlayerModel editedPlayer, Long positionId, Long clubId){
         PlayerModel oldPlayer = getPlayerById(editedPlayer.getId());
         PositionModel newPosition = positionService.getPositionById(positionId);
-        ClubModel newClub = clubService.getClubById(clubId);
+        if(clubId==-1){
+            oldPlayer.setPlayer_club(null);
+        }
+        else{
+            ClubModel newClub = clubService.getClubById(clubId);
+            oldPlayer.setPlayer_club(newClub);
+        }
         Integer newAge = generateAge(editedPlayer.getBirthday());
         oldPlayer.setName(editedPlayer.getName());
         oldPlayer.setAge(newAge);
@@ -55,7 +72,6 @@ public class PlayerServiceImpl implements PlayerService{
         oldPlayer.setWeight(editedPlayer.getWeight());
         oldPlayer.setNumber(editedPlayer.getNumber());
         oldPlayer.setPlayer_position(newPosition);
-        oldPlayer.setPlayer_club(newClub);
         playerRepository.save(oldPlayer);
     }
 
@@ -70,6 +86,25 @@ public class PlayerServiceImpl implements PlayerService{
     @Override
     public void deletePlayer(PlayerModel player){
         playerRepository.delete(player);
+    }
+
+    @Override
+    public Page<PlayerModel> getPlayerPagination(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<PlayerModel> listPlayer = playerRepository.findAll();
+        Collections.sort(listPlayer, (PlayerModel p1, PlayerModel p2) -> p1.getName().compareTo(p2.getName()));
+        List<PlayerModel> listPlayerOnPage;
+        if (listPlayer.size() < startItem) {
+            listPlayerOnPage = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, listPlayer.size());
+            listPlayerOnPage = listPlayer.subList(startItem, toIndex);
+        }
+        Page<PlayerModel> playerPage = new PageImpl<PlayerModel>(listPlayerOnPage, PageRequest.of(currentPage, pageSize), listPlayer.size());
+
+        return playerPage;
     }
 
     //@Override

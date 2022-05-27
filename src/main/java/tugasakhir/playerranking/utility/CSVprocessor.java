@@ -45,19 +45,45 @@ public class CSVprocessor {
                 String[] freeThrow = csvRecord.get("FT").split("-");
                 playerGameStatistic.setField_goal_made(Integer.parseInt(fieldGoal[0]));
                 playerGameStatistic.setField_goal_attempted(Integer.parseInt(fieldGoal[1]));
+                if(playerGameStatistic.getField_goal_attempted()!=0){
+                    playerGameStatistic.setField_goal_percentage(Double.parseDouble(fieldGoal[0])/Double.parseDouble(fieldGoal[1]));
+                }
+                else{
+                    playerGameStatistic.setField_goal_percentage(0.0);
+                }
                 playerGameStatistic.setTwo_point_made(Integer.parseInt(twoPoint[0]));
                 playerGameStatistic.setTwo_point_attempted(Integer.parseInt(twoPoint[1]));
+                if(playerGameStatistic.getTwo_point_attempted()!=0){
+                    playerGameStatistic.setTwo_point_percentage(Double.parseDouble(twoPoint[0])/Double.parseDouble(twoPoint[1]));
+                }
+                else{
+                    playerGameStatistic.setTwo_point_percentage(0.0);
+                }
                 playerGameStatistic.setThree_point_made(Integer.parseInt(threePoint[0]));
                 playerGameStatistic.setThree_point_attempted(Integer.parseInt(threePoint[1]));
+                if(playerGameStatistic.getThree_point_attempted()!=0){
+                    playerGameStatistic.setThree_point_percentage(Double.parseDouble(threePoint[0])/Double.parseDouble(threePoint[1]));
+                }
+                else{
+                    playerGameStatistic.setThree_point_percentage(0.0);
+                }
                 playerGameStatistic.setFree_throw_made(Integer.parseInt(freeThrow[0]));
                 playerGameStatistic.setFree_throw_attempted(Integer.parseInt(freeThrow[1]));
+                if(playerGameStatistic.getFree_throw_attempted()!=0){
+                    playerGameStatistic.setFree_throw_percentage(Double.parseDouble(freeThrow[0])/Double.parseDouble(freeThrow[1]));
+                }
+                else{
+                    playerGameStatistic.setFree_throw_percentage(0.0);
+                }
                 playerGameStatistic.setOffRebound(Integer.parseInt(csvRecord.get("OFF")));
                 playerGameStatistic.setDefRebound(Integer.parseInt(csvRecord.get("DEF")));
+                playerGameStatistic.setTotalRebound(Integer.parseInt(csvRecord.get("REB")));
                 playerGameStatistic.setAssist(Integer.parseInt(csvRecord.get("AST")));
                 playerGameStatistic.setTurnover(Integer.parseInt(csvRecord.get("TO")));
                 playerGameStatistic.setSteal(Integer.parseInt(csvRecord.get("STL")));
                 playerGameStatistic.setBlock(Integer.parseInt(csvRecord.get("BLK")));
                 playerGameStatistic.setFoul(Integer.parseInt(csvRecord.get("PF")));
+                playerGameStatistic.setFoulon(Integer.parseInt(csvRecord.get("FLS ON")));
                 playerGameStatistic.setGame_id(game);
                 playerGameStatistic.setClub_id(club);
                 playerGameStatistic.setPlayer_id(player);

@@ -40,6 +40,14 @@ public class GameModel implements Serializable{
     private Integer away_score;
 
     @NotNull
+    @Column(name="home_statistic_identifier",nullable = false)
+    private Integer home_statistic_identifier;
+
+    @NotNull
+    @Column(name="away_statistic_identifier",nullable = false)
+    private Integer away_statistic_identifier;
+
+    @NotNull
     @Size(max=100)
     @Column(name="code",nullable = false, unique = true)
     private String code;
@@ -145,5 +153,21 @@ public class GameModel implements Serializable{
 
     public void setPlayergamestatisticList(List<PlayerGameStatisticModel> playergamestatisticList) {
         this.playergamestatisticList = playergamestatisticList;
+    }
+
+    public Integer getHome_statistic_identifier() {
+        return home_statistic_identifier;
+    }
+
+    public void setHome_statistic_identifier(Integer home_statistic_identifier) {
+        this.home_statistic_identifier = home_statistic_identifier;
+    }
+
+    public Integer getAway_statistic_identifier() {
+        return away_statistic_identifier;
+    }
+
+    public void setAway_statistic_identifier(Integer away_statistic_identifier) {
+        this.away_statistic_identifier = away_statistic_identifier;
     }
 }

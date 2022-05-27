@@ -47,14 +47,18 @@ public class GameServiceImpl implements GameService{
         }
         if(game.getAway_club()==club){
             game.setAway_score(score);
+            game.setAway_statistic_identifier(1);
             saveGame(game);
 
         }
         else{
             game.setHome_score(score);
+            game.setHome_statistic_identifier(1);
             saveGame(game);
         }
     }
+
+
 
 
 }

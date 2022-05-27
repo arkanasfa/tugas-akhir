@@ -1,6 +1,8 @@
 package tugasakhir.playerranking.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,9 @@ import tugasakhir.playerranking.service.PlayerService;
 import tugasakhir.playerranking.service.PositionService;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/player")
@@ -26,9 +31,20 @@ public class PlayerController {
 
     @GetMapping("/list")
     private String listPlayer(
-            Model model){
-        List<PlayerModel> listPlayer = playerService.getPlayerList() ;
-        model.addAttribute("listPlayer", listPlayer);
+            Model model,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(8);
+        Page<PlayerModel> playerPage = playerService.getPlayerPagination(PageRequest.of(currentPage-1,pageSize));
+        model.addAttribute("playerPage", playerPage);
+        int totalPages = playerPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         return "player-list";
     }
 

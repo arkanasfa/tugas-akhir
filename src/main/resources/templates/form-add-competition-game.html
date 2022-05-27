@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,18 +24,18 @@
                     <form th:action="@{/competition/game/add}" th:object="${newGame}" method="POST">
                         <input type="hidden" th:field="*{id}"/>
                         <input type="hidden" th:field="*{game_competition}"/>
-                        <div id="home_club" class="form-group row" >
-                            <label class="col-sm-3 col-form-label">Home Club: </label>
-                            <div class="col-sm-3">
-                                <select name="home_clubId" class="form-control" >
-                                    <option th:each="club : ${listClub}" th:value="${club.id}" th:text="${club.name}"></option>
-                                </select>
-                            </div>
-                        </div>
                         <div id="away_club" class="form-group row" >
                             <label class="col-sm-3 col-form-label">Away Club: </label>
                             <div class="col-sm-3">
                                 <select name="away_clubId" class="form-control" >
+                                    <option th:each="club : ${listClub}" th:value="${club.id}" th:text="${club.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="home_club" class="form-group row" >
+                            <label class="col-sm-3 col-form-label">Home Club: </label>
+                            <div class="col-sm-3">
+                                <select name="home_clubId" class="form-control" >
                                     <option th:each="club : ${listClub}" th:value="${club.id}" th:text="${club.name}"></option>
                                 </select>
                             </div>

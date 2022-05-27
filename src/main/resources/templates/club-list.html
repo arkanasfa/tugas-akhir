@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -24,24 +24,63 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col" colspan="3">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="club, iterationStatus : ${listClub}">
-                            <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${club.name}"></td>
-                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/club/detail(id=${club.id})}">Detail</a></td>
-                            <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/club/edit/(id=${club.id})}">Edit</a></td>
-                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/club/delete(id=${club.id})}">Delete</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div style="overflow-x:auto;">
+                        <table class="rounded table table-bordered">
+                            <thead >
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Name</th>
+                                <th scope="col" colspan="3">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="club, iterationStatus : ${clubPage.getContent()}"
+                                th:style="${iterationStatus.odd}? 'font-weight: bold;'"
+                                th:alt-title="${iterationStatus.even}? 'even' : 'odd'">
+                                <td th:text="${iterationStatus.count}"></td>
+                                <td th:text="${club.name}"></td>
+                                <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/club/detail(id=${club.id})}">Detail</a></td>
+                                <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/club/edit/(id=${club.id})}">Edit</a></td>
+                                <td><a type="button" class="btn btn-outline-danger btn-block" data-toggle="modal"  th:attr="data-target='#recordDeleteModal'+${club.id}">Delete</a>
+                                    <!-- Modal -->
+                                    <div class="modal fade"  th:attr="id='recordDeleteModal'+${club.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Are you sure?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    If you delete this club, it will gone forever! Club that participated in any competition can not be deleted.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <a type="button" class="btn btn-danger" th:href="@{/club/delete(id=${club.id})}">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="overflow-x:auto;" aria-label="Page navigation" class="card border-0">
+                        <ul class="pagination justify-content-center" th:if="${clubPage.totalPages > 0}">
+                            <th:block th:each="pageNumber : ${pageNumbers}">
+                                <li class="page-item active" th:if="${pageNumber==clubPage.number + 1}">
+                                    <a class="page-link" th:href="@{/club/list(size=${clubPage.size}, page=${pageNumber})}"
+                                       th:text="${pageNumber}"></a>
+                                </li>
+                                <li class="page-item" th:if="${pageNumber!=clubPage.number + 1}">
+                                    <a class="page-link" th:href="@{/club/list(size=${clubPage.size}, page=${pageNumber})}"
+                                       th:text="${pageNumber}"></a>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
                     <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/}">Back</a>
                 </div>
             </div>

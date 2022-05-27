@@ -35,12 +35,20 @@ public class PlayerGameStatisticModel implements Serializable{
     private Integer field_goal_attempted;
 
     @NotNull
+    @Column(name="field_goal_percentage",nullable = false)
+    private Double field_goal_percentage;
+
+    @NotNull
     @Column(name="two_point_made",nullable = false)
     private Integer two_point_made;
 
     @NotNull
     @Column(name="two_point_attempted",nullable = false)
     private Integer two_point_attempted;
+
+    @NotNull
+    @Column(name="two_point_percentage",nullable = false)
+    private Double two_point_percentage;
 
     @NotNull
     @Column(name="three_point_made",nullable = false)
@@ -51,6 +59,10 @@ public class PlayerGameStatisticModel implements Serializable{
     private Integer three_point_attempted;
 
     @NotNull
+    @Column(name="three_point_percentage",nullable = false)
+    private Double three_point_percentage;
+
+    @NotNull
     @Column(name="free_throw_made",nullable = false)
     private Integer free_throw_made;
 
@@ -59,12 +71,20 @@ public class PlayerGameStatisticModel implements Serializable{
     private Integer free_throw_attempted;
 
     @NotNull
+    @Column(name="free_throw_percentage",nullable = false)
+    private Double free_throw_percentage;
+
+    @NotNull
     @Column(name="offRebound",nullable = false)
     private Integer offRebound;
 
     @NotNull
     @Column(name="defRebound",nullable = false)
     private Integer defRebound;
+
+    @NotNull
+    @Column(name="totalRebound",nullable = false)
+    private Integer totalRebound;
 
     @NotNull
     @Column(name="assist",nullable = false)
@@ -85,6 +105,10 @@ public class PlayerGameStatisticModel implements Serializable{
     @NotNull
     @Column(name="foul",nullable = false)
     private Integer foul;
+
+    @NotNull
+    @Column(name="foulon",nullable = false)
+    private Integer foulon;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "game_id", nullable = false)
@@ -270,5 +294,53 @@ public class PlayerGameStatisticModel implements Serializable{
 
     public void setClub_id(ClubModel club_id) {
         this.club_id = club_id;
+    }
+
+    public Double getField_goal_percentage() {
+        return field_goal_percentage;
+    }
+
+    public void setField_goal_percentage(Double field_goal_percentage) {
+        this.field_goal_percentage = field_goal_percentage;
+    }
+
+    public Double getTwo_point_percentage() {
+        return two_point_percentage;
+    }
+
+    public void setTwo_point_percentage(Double two_point_percentage) {
+        this.two_point_percentage = two_point_percentage;
+    }
+
+    public Double getThree_point_percentage() {
+        return three_point_percentage;
+    }
+
+    public void setThree_point_percentage(Double three_point_percentage) {
+        this.three_point_percentage = three_point_percentage;
+    }
+
+    public Double getFree_throw_percentage() {
+        return free_throw_percentage;
+    }
+
+    public void setFree_throw_percentage(Double free_throw_percentage) {
+        this.free_throw_percentage = free_throw_percentage;
+    }
+
+    public Integer getTotalRebound() {
+        return totalRebound;
+    }
+
+    public void setTotalRebound(Integer totalRebound) {
+        this.totalRebound = totalRebound;
+    }
+
+    public Integer getFoulon() {
+        return foulon;
+    }
+
+    public void setFoulon(Integer foulon) {
+        this.foulon = foulon;
     }
 }

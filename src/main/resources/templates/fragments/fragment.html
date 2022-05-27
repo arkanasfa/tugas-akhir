@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org/">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -21,17 +21,20 @@
 
 <body>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
-    <a th:text="PlayerRanking" class="navbar-brand font-weight-bold" th:href="@{/}" style="color: whitesmoke;padding-left: 30px"></a>
+    <a th:text="SI-PEMPEM" class="navbar-brand font-weight-bold" th:href="@{/}" style="color: whitesmoke;padding-left: 30px"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link active" th:href="@{/club/list}">Clubs<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link active" th:href="@{/player/list}">Players<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link active" th:href="@{/competition/list}">Competitions<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link active" th:href="@{/rank/find}">Ranking<span class="sr-only">(current)</span></a>
-        </div>
+        <ul class="navbar-nav">
+            <a class="nav-item nav-link active" th:href="@{/club/list}">Clubs</a>
+            <a class="nav-item nav-link active" th:href="@{/player/list}">Players</a>
+            <a class="nav-item nav-link active" th:href="@{/competition/list}">Competitions</a>
+            <a class="nav-item nav-link active" th:href="@{/rank/find}">Ranking</a>
+        </ul>
+        <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+            <a class="nav-item nav-link active" th:href="@{/logout}">Logout</a>
+        </ul>
     </div>
 </nav>
 </body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -24,30 +24,68 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col">End Date</th>
-                            <th scope="col">Year</th>
-                            <th scope="col" colspan="3">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="competition, iterationStatus : ${listCompetition}">
-                            <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${competition.name}"></td>
-                            <td th:text="${competition.start_date.Date}+'-'+${competition.start_date.Month+1}+'-'+${competition.start_date.Year+1900}"></td>
-                            <td th:text="${competition.end_date.Date}+'-'+${competition.end_date.Month+1}+'-'+${competition.end_date.Year+1900}"></td>
-                            <td th:text="${competition.year}"></td>
-                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/competition/detail(id=${competition.id})}">Detail</a></td>
-                            <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/competition/edit/(id=${competition.id})}">Edit</a></td>
-                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/competition/delete(id=${competition.id})}">Delete</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div style="overflow-x:auto;">
+                        <table class="rounded table table-bordered">
+                            <thead >
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Year</th>
+                                <th scope="col" colspan="3">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="competition, iterationStatus : ${competitionPage.getContent()}"
+                                th:style="${iterationStatus.odd}? 'font-weight: bold;'"
+                                th:alt-title="${iterationStatus.even}? 'even' : 'odd'">
+                                <td th:text="${iterationStatus.count}"></td>
+                                <td th:text="${competition.name}"></td>
+                                <td th:text="${competition.start_date.Date}+'-'+${competition.start_date.Month+1}+'-'+${competition.start_date.Year+1900}"></td>
+                                <td th:text="${competition.end_date.Date}+'-'+${competition.end_date.Month+1}+'-'+${competition.end_date.Year+1900}"></td>
+                                <td th:text="${competition.year}"></td>
+                                <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/competition/detail(id=${competition.id})}">Detail</a></td>
+                                <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/competition/edit/(id=${competition.id})}">Edit</a></td>
+                                <td><a type="button" class="btn btn-outline-danger btn-block"  data-toggle="modal"  th:attr="data-target='#recordDeleteModal'+${competition.id}">Delete</a>
+                                    <!-- Modal -->
+                                    <div class="modal fade"  th:attr="id='recordDeleteModal'+${competition.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Are you sure?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    If you delete this competition, it will gone forever!
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <a type="button" class="btn btn-danger" th:href="@{/competition/delete(id=${competition.id})}">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="overflow-x:auto;" aria-label="Page navigation" class="card border-0">
+                        <ul class="pagination justify-content-center" th:if="${competitionPage.totalPages > 0}">
+                            <th:block th:each="pageNumber : ${pageNumbers}">
+                                <li class="page-item active" th:if="${pageNumber==competitionPage.number + 1}">
+                                    <a class="page-link" th:href="@{/competition/list(size=${competitionPage.size}, page=${pageNumber})}"
+                                       th:text="${pageNumber}"></a>
+                                </li>
+                                <li class="page-item" th:if="${pageNumber!=competitionPage.number + 1}">
+                                    <a class="page-link" th:href="@{/competition/list(size=${competitionPage.size}, page=${pageNumber})}"
+                                       th:text="${pageNumber}"></a>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
                     <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/}">Back</a>
                 </div>
             </div>

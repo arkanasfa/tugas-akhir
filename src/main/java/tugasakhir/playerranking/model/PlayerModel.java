@@ -48,7 +48,7 @@ public class PlayerModel implements Serializable{
     private String number;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "club_id", nullable = false)
+    @JoinColumn(name = "club_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private ClubModel player_club;

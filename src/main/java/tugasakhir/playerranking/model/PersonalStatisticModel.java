@@ -20,6 +20,10 @@ public class PersonalStatisticModel implements Serializable{
     private Long id;
 
     @NotNull
+    @Column(name="club",nullable = false)
+    private String club=" ";
+
+    @NotNull
     @Column(name="game",nullable = false)
     private Double game= 0.0;
 
@@ -32,8 +36,60 @@ public class PersonalStatisticModel implements Serializable{
     private Double fgmpg= 0.0;
 
     @NotNull
+    @Column(name="fgapg",nullable = false)
+    private Double fgapg= 0.0;
+
+    @NotNull
+    @Column(name="fgperpg",nullable = false)
+    private Double fgperpg= 0.0;
+
+    @NotNull
+    @Column(name="twoptmpg",nullable = false)
+    private Double twoptmpg= 0.0;
+
+    @NotNull
+    @Column(name="twoptapg",nullable = false)
+    private Double twoptapg= 0.0;
+
+    @NotNull
+    @Column(name="twoptperpg",nullable = false)
+    private Double twoptperpg= 0.0;
+
+    @NotNull
+    @Column(name="threeptmpg",nullable = false)
+    private Double threeptmpg= 0.0;
+
+    @NotNull
+    @Column(name="threeptapg",nullable = false)
+    private Double threeptapg= 0.0;
+
+    @NotNull
+    @Column(name="threeptperpg",nullable = false)
+    private Double threeptperpg= 0.0;
+
+    @NotNull
+    @Column(name="ftmpg",nullable = false)
+    private Double ftmpg= 0.0;
+
+    @NotNull
+    @Column(name="ftapg",nullable = false)
+    private Double ftapg= 0.0;
+
+    @NotNull
+    @Column(name="ftperpg",nullable = false)
+    private Double ftperpg= 0.0;
+
+    @NotNull
     @Column(name="apg",nullable = false)
     private Double apg= 0.0;
+
+    @NotNull
+    @Column(name="orpg",nullable = false)
+    private Double orpg= 0.0;
+
+    @NotNull
+    @Column(name="drpg",nullable = false)
+    private Double drpg= 0.0;
 
     @NotNull
     @Column(name="rpg",nullable = false)
@@ -48,12 +104,12 @@ public class PersonalStatisticModel implements Serializable{
     private Double stlpg= 0.0;
 
     @NotNull
-    @Column(name="ftmpg",nullable = false)
-    private Double ftmpg= 0.0;
-
-    @NotNull
     @Column(name="flspg",nullable = false)
     private Double flspg= 0.0;
+
+    @NotNull
+    @Column(name="flsonpg",nullable = false)
+    private Double flsonpg= 0.0;
 
     @NotNull
     @Column(name="topg",nullable = false)
@@ -68,8 +124,32 @@ public class PersonalStatisticModel implements Serializable{
     private Double fieldGoals= 0.0;
 
     @NotNull
+    @Column(name="totalFieldGoalAttempt",nullable = false)
+    private Double fieldGoalAttempts= 0.0;
+
+    @NotNull
+    @Column(name="totalTwoPointMade",nullable = false)
+    private Double twoPointMades= 0.0;
+
+    @NotNull
+    @Column(name="totalTwoPointAttempt",nullable = false)
+    private Double twoPointAttempts= 0.0;
+
+    @NotNull
+    @Column(name="totalThreePointMade",nullable = false)
+    private Double threePointMades= 0.0;
+
+    @NotNull
+    @Column(name="totalThreePointAttempt",nullable = false)
+    private Double threePointAttempts= 0.0;
+
+    @NotNull
     @Column(name="totalFreeThrow",nullable = false)
     private Double freeThrows= 0.0;
+
+    @NotNull
+    @Column(name="totalFreeThrowAttempt",nullable = false)
+    private Double freeThrowAttempts= 0.0;
 
     @NotNull
     @Column(name="totalAssist",nullable = false)
@@ -78,6 +158,14 @@ public class PersonalStatisticModel implements Serializable{
     @NotNull
     @Column(name="totalRebound",nullable = false)
     private Double rebounds= 0.0;
+
+    @NotNull
+    @Column(name="totalOffRebound",nullable = false)
+    private Double offRebounds= 0.0;
+
+    @NotNull
+    @Column(name="totalDefRebound",nullable = false)
+    private Double defRebounds= 0.0;
 
     @NotNull
     @Column(name="totalBlock",nullable = false)
@@ -90,6 +178,10 @@ public class PersonalStatisticModel implements Serializable{
     @NotNull
     @Column(name="totalFoul",nullable = false)
     private Double fouls= 0.0;
+
+    @NotNull
+    @Column(name="totalFoulReceived",nullable = false)
+    private Double foulons= 0.0;
 
     @NotNull
     @Column(name="totalTurnover",nullable = false)
@@ -300,5 +392,189 @@ public class PersonalStatisticModel implements Serializable{
 
     public void setTurnovers(Double turnovers) {
         this.turnovers = turnovers;
+    }
+
+    public String getClub() {
+        return club;
+    }
+
+    public void setClub(String club) {
+        this.club = club;
+    }
+
+    public Double getFgapg() {
+        return fgapg;
+    }
+
+    public void setFgapg(Double fgapg) {
+        this.fgapg = fgapg;
+    }
+
+    public Double getFgperpg() {
+        return fgperpg;
+    }
+
+    public void setFgperpg(Double fgperpg) {
+        this.fgperpg = fgperpg;
+    }
+
+    public Double getTwoptmpg() {
+        return twoptmpg;
+    }
+
+    public void setTwoptmpg(Double twoptmpg) {
+        this.twoptmpg = twoptmpg;
+    }
+
+    public Double getTwoptapg() {
+        return twoptapg;
+    }
+
+    public void setTwoptapg(Double twoptapg) {
+        this.twoptapg = twoptapg;
+    }
+
+    public Double getTwoptperpg() {
+        return twoptperpg;
+    }
+
+    public void setTwoptperpg(Double twoptperpg) {
+        this.twoptperpg = twoptperpg;
+    }
+
+    public Double getThreeptmpg() {
+        return threeptmpg;
+    }
+
+    public void setThreeptmpg(Double threeptmpg) {
+        this.threeptmpg = threeptmpg;
+    }
+
+    public Double getThreeptapg() {
+        return threeptapg;
+    }
+
+    public void setThreeptapg(Double threeptapg) {
+        this.threeptapg = threeptapg;
+    }
+
+    public Double getThreeptperpg() {
+        return threeptperpg;
+    }
+
+    public void setThreeptperpg(Double threeptperpg) {
+        this.threeptperpg = threeptperpg;
+    }
+
+    public Double getFtapg() {
+        return ftapg;
+    }
+
+    public void setFtapg(Double ftapg) {
+        this.ftapg = ftapg;
+    }
+
+    public Double getFtperpg() {
+        return ftperpg;
+    }
+
+    public void setFtperpg(Double ftperpg) {
+        this.ftperpg = ftperpg;
+    }
+
+    public Double getOrpg() {
+        return orpg;
+    }
+
+    public void setOrpg(Double orpg) {
+        this.orpg = orpg;
+    }
+
+    public Double getDrpg() {
+        return drpg;
+    }
+
+    public void setDrpg(Double drpg) {
+        this.drpg = drpg;
+    }
+
+    public Double getFlsonpg() {
+        return flsonpg;
+    }
+
+    public void setFlsonpg(Double flsonpg) {
+        this.flsonpg = flsonpg;
+    }
+
+    public Double getFieldGoalAttempts() {
+        return fieldGoalAttempts;
+    }
+
+    public void setFieldGoalAttempts(Double fieldGoalAttempts) {
+        this.fieldGoalAttempts = fieldGoalAttempts;
+    }
+
+    public Double getFreeThrowAttempts() {
+        return freeThrowAttempts;
+    }
+
+    public void setFreeThrowAttempts(Double freeThrowAttempts) {
+        this.freeThrowAttempts = freeThrowAttempts;
+    }
+
+    public Double getOffRebounds() {
+        return offRebounds;
+    }
+
+    public void setOffRebounds(Double offRebounds) {
+        this.offRebounds = offRebounds;
+    }
+
+    public Double getDefRebounds() {
+        return defRebounds;
+    }
+
+    public void setDefRebounds(Double defRebounds) {
+        this.defRebounds = defRebounds;
+    }
+
+    public Double getFoulons() {
+        return foulons;
+    }
+
+    public void setFoulons(Double foulons) {
+        this.foulons = foulons;
+    }
+
+    public Double getTwoPointMades() {
+        return twoPointMades;
+    }
+
+    public void setTwoPointMades(Double twoPointMades) {
+        this.twoPointMades = twoPointMades;
+    }
+
+    public Double getTwoPointAttempts() {
+        return twoPointAttempts;
+    }
+
+    public void setTwoPointAttempts(Double twoPointAttempts) {
+        this.twoPointAttempts = twoPointAttempts;
+    }
+
+    public Double getThreePointMades() {
+        return threePointMades;
+    }
+
+    public void setThreePointMades(Double threePointMades) {
+        this.threePointMades = threePointMades;
+    }
+
+    public Double getThreePointAttempts() {
+        return threePointAttempts;
+    }
+
+    public void setThreePointAttempts(Double threePointAttempts) {
+        this.threePointAttempts = threePointAttempts;
     }
 }

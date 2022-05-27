@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@
                     <h3 class="card-title">Select Club and Competition</h3>
                     <form th:action="@{/rank/find}" method="POST">
                         <div id="position" class="form-group row" >
-                            <label class="col-sm-3 col-form-label">Position: </label>
+                            <label class="col-sm-3 col-form-label">Club: </label>
                             <div class="col-sm-3">
                                 <select name="clubId" class="form-control" >
                                     <option th:each="club : ${listClub}" th:value="${club.id}" th:text="${club.name}"></option>
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div id="club" class="form-group row" >
-                            <label class="col-sm-3 col-form-label">Club: </label>
+                            <label class="col-sm-3 col-form-label">Competition: </label>
                             <div class="col-sm-3">
                                 <select name="competitionId" class="form-control" >
                                     <option  th:each="competition : ${listCompetition}" th:value="${competition.id}" th:text="${competition.name}"></option>

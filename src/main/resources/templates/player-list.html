@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -24,36 +24,78 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Height</th>
-                            <th scope="col">Weight</th>
-                            <th scope="col">Position</th>
-                            <th scope="col">Shirt Number</th>
-                            <th scope="col">Club</th>
-                            <th scope="col" colspan="3">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="player, iterationStatus : ${listPlayer}">
-                            <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${player.name}"></td>
-                            <td th:text="${player.age} + ' years'"></td>
-                            <td th:text="${player.height} + ' cm'"></td>
-                            <td th:text="${player.weight} + ' kg'"></td>
-                            <td th:text="${player.player_position.name}"></td>
-                            <td th:text="${player.number}"></td>
-                            <td th:text="${player.player_club.name}"></td>
-                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/player/detail(id=${player.id})}">Detail</a></td>
-                            <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/player/edit/(id=${player.id})}">Edit</a></td>
-                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/player/delete(id=${player.id})}">Delete</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div style="overflow-x:auto;">
+                        <table class="rounded table table-bordered">
+                            <thead >
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Height</th>
+                                <th scope="col">Weight</th>
+                                <th scope="col">Position</th>
+                                <th scope="col">Shirt Number</th>
+                                <th scope="col">Club</th>
+                                <th scope="col" colspan="3">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="player, iterationStatus : ${playerPage.getContent()}"
+                                th:style="${iterationStatus.odd}? 'font-weight: bold;'"
+                                th:alt-title="${iterationStatus.even}? 'even' : 'odd'">
+                                <td th:text="${iterationStatus.count}"></td>
+                                <td th:text="${player.name}"></td>
+                                <td th:text="${player.age} + ' years'"></td>
+                                <td th:text="${player.height} + ' cm'"></td>
+                                <td th:text="${player.weight} + ' kg'"></td>
+                                <td th:text="${player.player_position.name}"></td>
+                                <td th:text="${player.number}"></td>
+                                <div th:switch="${player.player_club}">
+                                    <td th:case="null" th:text="'Free Agent'"></td>
+                                    <td th:case="${player.player_club}" th:text="${player.player_club.name}"></td>
+                                </div>
+                                <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/player/detail(id=${player.id})}">Detail</a></td>
+                                <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/player/edit/(id=${player.id})}">Edit</a></td>
+                                <td><a type="button" class="btn btn-outline-danger btn-block"  data-toggle="modal"  th:attr="data-target='#recordDeleteModal'+${player.id}">Delete</a>
+                                    <!-- Modal -->
+                                    <div class="modal fade"  th:attr="id='recordDeleteModal'+${player.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Are you sure?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    If you delete this player, it will gone forever!
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <a type="button" class="btn btn-danger" th:href="@{/player/delete(id=${player.id})}">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="overflow-x:auto;" aria-label="Page navigation" class="card border-0">
+                        <ul class="pagination justify-content-center" th:if="${playerPage.totalPages > 0}">
+                            <th:block th:each="pageNumber : ${pageNumbers}">
+                                <li class="page-item active" th:if="${pageNumber==playerPage.number + 1}">
+                                    <a class="page-link" th:href="@{/player/list(size=${playerPage.size}, page=${pageNumber})}"
+                                       th:text="${pageNumber}"></a>
+                                </li>
+                                <li class="page-item" th:if="${pageNumber!=playerPage.number + 1}">
+                                    <a class="page-link" th:href="@{/player/list(size=${playerPage.size}, page=${pageNumber})}"
+                                       th:text="${pageNumber}"></a>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
                     <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/}">Back</a>
                 </div>
             </div>

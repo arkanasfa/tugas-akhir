@@ -2,6 +2,7 @@ package tugasakhir.playerranking.service;
 
 import tugasakhir.playerranking.model.GameModel;
 import tugasakhir.playerranking.model.PersonalStatisticModel;
+import tugasakhir.playerranking.model.PlayerGameStatisticModel;
 import tugasakhir.playerranking.model.PlayerModel;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface PersonalStatisticService {
     Boolean checkPersonalStatisticByCompetitionIdandPlayerId(Long competitionId, Long playerId);
     PersonalStatisticModel getPersonalStatisticByCompetitionIdandPlayerId(Long competitionId, Long playerId);
     void savePersonalStatistic(PersonalStatisticModel personalStatistic);
+    PersonalStatisticModel removeCalculatedPersonalStatistic(PlayerModel player, PlayerGameStatisticModel gameStatistic, PersonalStatisticModel personalStatistic);
 }

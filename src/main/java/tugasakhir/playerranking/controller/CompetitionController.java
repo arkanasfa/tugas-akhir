@@ -1,6 +1,8 @@
 package tugasakhir.playerranking.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +12,12 @@ import tugasakhir.playerranking.model.*;
 import tugasakhir.playerranking.service.*;
 import tugasakhir.playerranking.utility.CSVprocessor;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/competition")
@@ -36,9 +43,20 @@ public class CompetitionController {
 
     @GetMapping("/list")
     private String listCompetition(
-            Model model){
-        List<CompetitionModel> listCompetition = competitionService.getCompetitionList();
-        model.addAttribute("listCompetition", listCompetition);
+            Model model,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(8);
+        Page<CompetitionModel> competitionPage = competitionService.getCompetitionPagination(PageRequest.of(currentPage-1,pageSize));
+        model.addAttribute("competitionPage", competitionPage);
+        int totalPages = competitionPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         return "competition-list";
     }
 
@@ -95,7 +113,9 @@ public class CompetitionController {
             Model model){
         CompetitionModel competition = competitionService.getCompetitionById(id);
         List<ClubModel> listClub = competition.getParticipant_club();
+        Collections.sort(listClub, (ClubModel c1, ClubModel c2) -> c1.getName().compareTo(c2.getName()));
         List<GameModel> listGame = competition.getGameList();
+        Collections.sort(listGame, (GameModel g1, GameModel g2) -> g1.getDate().compareTo(g2.getDate()));
         model.addAttribute("competition",competition);
         model.addAttribute("listClub",listClub);
         model.addAttribute("listGame",listGame);
@@ -172,8 +192,46 @@ public class CompetitionController {
             Model model){
         GameModel game = gameService.findGameById(gameId);
         model.addAttribute("id",competitionId);
-        model.addAttribute("name", competitionService.getCompetitionById(competitionId).getName());
+        model.addAttribute("name", game.getGame_competition().getName());
         model.addAttribute("code", game.getCode());
+        List<PlayerGameStatisticModel> listGameStatistic = new ArrayList<>();
+        if(game.getAway_statistic_identifier()==0&&game.getHome_statistic_identifier()==0){
+            gameService.removeGame(game);
+            return "game-removed";
+        }
+        if(game.getHome_statistic_identifier()==1){
+            List<PlayerModel> listPlayerHome = game.getHome_club().getPlayerList();
+            List<PersonalStatisticModel> listPersonalStatisticHome = new ArrayList<>();
+            for(PlayerModel player:listPlayerHome){
+                if(playerGameStatisticService.checkPlayerGameStatistic(game.getId(),player.getId())){
+                    PlayerGameStatisticModel playerGameStatistic = playerGameStatisticService.getPlayerGameStatistic(game.getId(),player.getId());
+                    PersonalStatisticModel personalStatistic = personalStatisticService.getPersonalStatisticByCompetitionIdandPlayerId(game.getGame_competition().getId(),player.getId());
+                    PersonalStatisticModel updatedPersonalStatistic = personalStatisticService.removeCalculatedPersonalStatistic(player,playerGameStatistic,personalStatistic);
+                    personalStatisticService.savePersonalStatistic(updatedPersonalStatistic);
+                    listGameStatistic.add(playerGameStatistic);
+                    listPersonalStatisticHome.add(personalStatistic);
+                }
+            }
+            List<RankModel> listRank = rankService.createListOfRank(listPersonalStatisticHome);
+            rankService.rankPlayer(listPersonalStatisticHome,listRank);
+        }
+        if(game.getAway_statistic_identifier()==1){
+            List<PlayerModel> listPlayerAway = game.getAway_club().getPlayerList();
+            List<PersonalStatisticModel> listPersonalStatisticAway = new ArrayList<>();
+            for(PlayerModel player:listPlayerAway){
+                if(playerGameStatisticService.checkPlayerGameStatistic(game.getId(),player.getId())){
+                    PlayerGameStatisticModel playerGameStatistic = playerGameStatisticService.getPlayerGameStatistic(game.getId(),player.getId());
+                    PersonalStatisticModel personalStatistic = personalStatisticService.getPersonalStatisticByCompetitionIdandPlayerId(game.getGame_competition().getId(),player.getId());
+                    PersonalStatisticModel updatedPersonalStatistic = personalStatisticService.removeCalculatedPersonalStatistic(player,playerGameStatistic,personalStatistic);
+                    personalStatisticService.savePersonalStatistic(updatedPersonalStatistic);
+                    listGameStatistic.add(playerGameStatistic);
+                    listPersonalStatisticAway.add(personalStatistic);
+                }
+            }
+            List<RankModel> listRank = rankService.createListOfRank(listPersonalStatisticAway);
+            rankService.rankPlayer(listPersonalStatisticAway,listRank);
+        }
+        playerGameStatisticService.removeGameStatistic(listGameStatistic);
         gameService.removeGame(game);
         return "game-removed";
     }
@@ -238,6 +296,7 @@ public class CompetitionController {
         GameModel game = gameService.findGameById(gameId);
         ClubModel club = clubService.getClubById(clubId);
         List<PlayerModel> listPlayer = club.getPlayerList();
+        competitionService.createPersonalStatistic(listPlayer,game.getGame_competition());
         List<PlayerGameStatisticModel> listPlayerGameStatistic =  playerGameStatisticService.addPlayerGameStatistic(file,listPlayer,game,club);
         gameService.addGameScore(game,club,listPlayerGameStatistic);
         List<PersonalStatisticModel> listPersonalStatistic = personalStatisticService.addPersonalStatistic(listPlayer,game);

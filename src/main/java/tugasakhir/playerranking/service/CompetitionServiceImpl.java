@@ -1,12 +1,17 @@
 package tugasakhir.playerranking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tugasakhir.playerranking.model.*;
 import tugasakhir.playerranking.repository.CompetitionRepository;
 import tugasakhir.playerranking.repository.GameRepository;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -25,6 +30,25 @@ public class CompetitionServiceImpl implements CompetitionService{
 
     @Autowired
     PersonalStatisticService personalStatisticService;
+
+    @Override
+    public Page<CompetitionModel> getCompetitionPagination(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<CompetitionModel> listCompetition = competitionRepository.findAll();
+        Collections.sort(listCompetition, (CompetitionModel c1, CompetitionModel c2) -> c2.getEnd_date().compareTo(c1.getEnd_date()));
+        List<CompetitionModel> listCompetitionOnPage;
+        if (listCompetition.size() < startItem) {
+            listCompetitionOnPage = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, listCompetition.size());
+            listCompetitionOnPage = listCompetition.subList(startItem, toIndex);
+        }
+        Page<CompetitionModel> competitionPage = new PageImpl<CompetitionModel>(listCompetitionOnPage, PageRequest.of(currentPage, pageSize), listCompetition.size());
+
+        return competitionPage;
+    }
 
     @Override
     public List<CompetitionModel> getCompetitionList(){return competitionRepository.findAll();}
@@ -55,17 +79,18 @@ public class CompetitionServiceImpl implements CompetitionService{
         List<ClubModel> oldParticipant = targetCompetition.getParticipant_club();
         oldParticipant.add(participant);
         targetCompetition.setParticipant_club(oldParticipant);
-        List<PlayerModel> playerList = participant.getPlayerList();
-        createPersonalStatistic(playerList,targetCompetition);
         competitionRepository.save(targetCompetition);
     }
 
-    private void createPersonalStatistic(List<PlayerModel> playerList,CompetitionModel competition){
+    @Override
+    public void createPersonalStatistic(List<PlayerModel> playerList,CompetitionModel competition){
         for(PlayerModel player:playerList){
-            PersonalStatisticModel newPersonalStatistic = new PersonalStatisticModel();
-            newPersonalStatistic.setPlayer_id(player);
-            newPersonalStatistic.setCompetition_id(competition);
-            personalStatisticService.savePersonalStatistic(newPersonalStatistic);
+            if(!personalStatisticService.checkPersonalStatisticByCompetitionIdandPlayerId(competition.getId(),player.getId())){
+                PersonalStatisticModel newPersonalStatistic = new PersonalStatisticModel();
+                newPersonalStatistic.setPlayer_id(player);
+                newPersonalStatistic.setCompetition_id(competition);
+                personalStatisticService.savePersonalStatistic(newPersonalStatistic);
+            }
         }
     }
 
@@ -85,8 +110,10 @@ public class CompetitionServiceImpl implements CompetitionService{
         ClubModel away_club = clubService.getClubById(away_clubId);
         newGame.setHome_club(home_club);
         newGame.setHome_score(Integer.valueOf(0));
+        newGame.setHome_statistic_identifier(Integer.valueOf(0));
         newGame.setAway_club(away_club);
         newGame.setAway_score(Integer.valueOf(0));
+        newGame.setAway_statistic_identifier(Integer.valueOf(0));
         String code = gameCodeGenerator(newGame,home_clubId,away_clubId);
         newGame.setCode(code);
         gameService.saveGame(newGame);

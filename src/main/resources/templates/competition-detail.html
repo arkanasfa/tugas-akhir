@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -24,54 +24,125 @@
 <div class="container">
     <div class="row container-fluid">
         <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">Participants</h3>
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col" colspan="1">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="participant, iterationStatus : ${listClub}">
-                            <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${participant.name}"></td>
-                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/club/detail(id=${participant.id})}">Detail</a></td>
-                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/competition/participant/remove(participantId=${participant.id},competitionId=${competition.id})}">Remove</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <h3 class="card-title">Games</h3>
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Away Team</th>
-                            <th scope="col">Away Score</th>
-                            <th scope="col">Home Score</th>
-                            <th scope="col">Home Team</th>
-                            <th scope="col">Code</th>
-                            <th scope="col" colspan="3">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="game, iterationStatus : ${listGame}">
-                            <td th:text="${iterationStatus.count}"></td>
-                            <td th:text="${game.away_club.name}"></td>
-                            <td th:text="${game.away_score}"></td>
-                            <td th:text="${game.home_score}"></td>
-                            <td th:text="${game.home_club.name}"></td>
-                            <td th:text="${game.code}"></td>
-                            <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/competition/game/detail(id=${game.id})}">Detail</a></td>
-                            <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/competition/game/edit/(id=${game.id})}">Edit</a></td>
-                            <td><a type="button" class="btn btn-outline-danger btn-block"  th:href="@{/competition/game/delete(gameId=${game.id},competitionId=${competition.id})}">Delete</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/competition/list}">Back</a>
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-player-tab" data-toggle="tab" href="#participant" role="tab" aria-selected="true">Participants</a></li>
+                    <a class="nav-item nav-link" id="nav-competition-tab" data-toggle="tab" role="tab" href="#game">Games</a></li>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div id="participant" class="tab-pane fade show active"  role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Participants</h3>
+                            <div style="overflow-x:auto;">
+                                <table class="rounded table table-bordered">
+                                    <thead >
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col" colspan="1">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="participant, iterationStatus : ${listClub}"
+                                        th:style="${iterationStatus.odd}? 'font-weight: bold;'"
+                                        th:alt-title="${iterationStatus.even}? 'even' : 'odd'">
+                                        <td th:text="${iterationStatus.count}"></td>
+                                        <td th:text="${participant.name}"></td>
+                                        <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/club/detail(id=${participant.id})}">Detail</a></td>
+                                        <td><a type="button" class="btn btn-outline-danger btn-block" data-toggle="modal"  th:attr="data-target='#recordDeleteModal'+${participant.id}+${competition.id}">Remove</a>
+                                            <!-- Modal -->
+                                            <div class="modal fade"  th:attr="id='recordDeleteModal'+${participant.id}+${competition.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Are you sure?</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            If you delete this participant, it will removed from the competition!
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <a type="button" class="btn btn-danger"  th:href="@{/competition/participant/remove(participantId=${participant.id},competitionId=${competition.id})}">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/competition/list}">Back</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="game" class="tab-pane fade" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Games</h3>
+                            <div style="overflow-x:auto;">
+                                <table class="rounded table table-bordered">
+                                    <thead >
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Tipoff</th>
+                                        <th scope="col">Away Team</th>
+                                        <th scope="col">Away Score</th>
+                                        <th scope="col">Home Score</th>
+                                        <th scope="col">Home Team</th>
+                                        <th scope="col">Code</th>
+                                        <th scope="col" colspan="3">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="game, iterationStatus : ${listGame}"
+                                        th:style="${iterationStatus.odd}? 'font-weight: bold;'"
+                                        th:alt-title="${iterationStatus.even}? 'even' : 'odd'">
+                                        <td th:text="${iterationStatus.count}"></td>
+                                        <td th:text="${game.date.Date}+'-'+${game.date.Month+1}+'-'+${game.date.Year+1900}"></td>
+                                        <td th:text="${game.tipoff.Hours}+':'+${game.tipoff.Minutes}"></td>
+                                        <td th:text="${game.away_club.name}"></td>
+                                        <td th:text="${game.away_score}"></td>
+                                        <td th:text="${game.home_score}"></td>
+                                        <td th:text="${game.home_club.name}"></td>
+                                        <td th:text="${game.code}"></td>
+                                        <td><a type="button" class="btn btn-outline-info btn-block"  th:href="@{/competition/game/detail(id=${game.id})}">Detail</a></td>
+                                        <td><a type="button" class="btn btn-outline-warning btn-block"  th:href="@{/competition/game/edit/(id=${game.id})}">Edit</a></td>
+                                        <td><a type="button" class="btn btn-outline-danger btn-block"  data-toggle="modal"  th:attr="data-target='#recordDeleteModal'+${game.id}+${competition.id}">Delete</a>
+                                            <!-- Modal -->
+                                            <div class="modal fade"  th:attr="id='recordDeleteModal'+${game.id}+${competition.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Are you sure?</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            If you delete this competition, it will gone forever!
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <a type="button" class="btn btn-danger"  th:href="@{/competition/game/delete(gameId=${game.id},competitionId=${competition.id})}">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/competition/list}">Back</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -9,21 +9,71 @@
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
     <object th:include="fragments/fragment :: styles" th:remove="tag"></object>
+
 </head>
 
-<body style="font-family: 'Noto Sans KR', sans-serif; background-color: #dddddd">
+<body style="font-family: 'Noto Sans KR', sans-serif;">
 <nav th:replace="fragments/fragment"></nav>
-<div class="jumbotron jumbotron-fluid" style="background-color: #dddddd">
-    <div class="container">
-        <h1 class="display-4">Welcome to Player Ranking DSS</h1>
+<div class="container">
+    <br>
+    <br>
+    <h1 class="h1 text-center" th:text="'Hello, '+${#httpServletRequest.remoteUser}+'! Welcome to SI-PEMPEM'">My Cards Dark</h1>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <a th:href="@{/club/list}">
+                    <img th:src="@{/images/FPWF1wBaIAckBQX.jpg}"  class="card-img-top" alt="club">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">Club List</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <a th:href="@{/player/list}">
+                    <img th:src="@{/images/FRbYSZiacAIbghq.jpg}"  class="card-img-top" alt="player">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">Player List</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <a th:href="@{/competition/list}" >
+                    <img th:src="@{/images/FPWF-UkakAQMnsW.jpg}"  class="card-img-top" alt="competition">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">Competition List</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div class="row">
+        <div class="col mb-4">
+            <div class="card">
+                <a th:href="@{/rank/find}">
+                    <img th:src="@{/images/FPMS3ZhaIAAwnDq.jpg}"  class="card-img-top" alt="rank">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">Player Ranking</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+</div>
 
-<br>
-<br>
-<br>
-<br>
 </body>
-
 </html>
 

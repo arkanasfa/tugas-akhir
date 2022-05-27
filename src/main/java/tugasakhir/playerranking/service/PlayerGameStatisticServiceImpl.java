@@ -47,4 +47,9 @@ public class PlayerGameStatisticServiceImpl implements PlayerGameStatisticServic
         return playerGameStatisticRepository.findPlayerGameStatistic(game_id,player_id).isPresent();
     }
 
+    @Override
+    public void removeGameStatistic(List<PlayerGameStatisticModel> listPlayerGameStatistic){
+        playerGameStatisticRepository.deleteAll(listPlayerGameStatistic);
+    }
+
 }

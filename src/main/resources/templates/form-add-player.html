@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,6 +65,7 @@
                             <label class="col-sm-3 col-form-label">Club: </label>
                             <div class="col-sm-3">
                                 <select name="clubId" class="form-control" >
+                                    <option selected th:value="-1">-</option>
                                     <option  th:each="club : ${listClub}" th:value="${club.id}" th:text="${club.name}"></option>
                                 </select>
                             </div>

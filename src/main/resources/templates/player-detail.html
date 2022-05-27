@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,14 @@
     <div class="container">
         <h1 class="display-4" th:text="${player.name}"></h1>
         <hr>
-        <h3 class="display-7" th:text="${player.player_club.name} + ' | ' + ${player.player_position.name} + ' | ' + ${player.number}"></h3>
+        <div th:switch="${player.player_club}">
+            <td th:case="null">
+                <h3 class="display-7" th:text="'Free Agent' + ' | ' + ${player.player_position.name} + ' | ' + ${player.number}"></h3>
+            </td>
+            <td th:case="${player.player_club}">
+                <h3 class="display-7" th:text="${player.player_club.name} + ' | ' + ${player.player_position.name} + ' | ' + ${player.number}"></h3>
+            </td>
+        </div>
         <hr>
         <h5 class="display-10" th:text="'Birthdate: '+${player.birthday.Date}+'-'+${player.birthday.Month+1}+'-'+${player.birthday.Year+1900}+' (Age: '+${player.age}+')'
         + ' | ' +' Height: '+${player.height}+' cm'+ ' | ' +' Weight: '+${player.weight}+' kg'"></h5>
@@ -25,83 +32,149 @@
 <div class="container">
     <div class="row container-fluid">
         <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">Personal Statistic</h3>
-                    <hr>
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">Competition</th>
-                            <th scope="col">Games</th>
-                            <th scope="col">PPG</th>
-                            <th scope="col">FGMPG</th>
-                            <th scope="col">FTMPG</th>
-                            <th scope="col">APG</th>
-                            <th scope="col">RPG</th>
-                            <th scope="col">BLKPG</th>
-                            <th scope="col">STLPG</th>
-                            <th scope="col">TOPG</th>
-                            <th scope="col">FLSPG</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="stats, iterationStatus : ${personalStats}">
-                            <td th:text="${stats.competition_id.name}"></td>
-                            <td th:text="${stats.game}"></td>
-                            <td th:text="${stats.ppg}"></td>
-                            <td th:text="${stats.fgmpg}"></td>
-                            <td th:text="${stats.ftmpg}"></td>
-                            <td th:text="${stats.apg}"></td>
-                            <td th:text="${stats.rpg}"></td>
-                            <td th:text="${stats.blkpg}"></td>
-                            <td th:text="${stats.stlpg}"></td>
-                            <td th:text="${stats.topg}"></td>
-                            <td th:text="${stats.flspg}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <h3 class="card-title">Game Logs</h3>
-                    <hr>
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">Game</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Mins</th>
-                            <th scope="col">Pts</th>
-                            <th scope="col">Field Goal</th>
-                            <th scope="col">Two Point</th>
-                            <th scope="col">Three Point</th>
-                            <th scope="col">Free Throw</th>
-                            <th scope="col">Rebound</th>
-                            <th scope="col">Assist</th>
-                            <th scope="col">Steal</th>
-                            <th scope="col">Block</th>
-                            <th scope="col">Turnover</th>
-                            <th scope="col">Foul</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="game, iterationStatus : ${gameLogs}">
-                            <td th:text="${game.game_id.away_club.name}+' - '+${game.game_id.home_club.name}"></td>
-                            <td th:text="${game.game_id.date.Date}+'-'+${game.game_id.date.Month+1}+'-'+${game.game_id.date.Year+1900}"></td>
-                            <td th:text="${game.minute}"></td>
-                            <td th:text="${game.point}"></td>
-                            <td th:text="${game.field_goal_made}+'-'+${game.field_goal_attempted}"></td>
-                            <td th:text="${game.two_point_made}+'-'+${game.two_point_attempted}"></td>
-                            <td th:text="${game.three_point_made}+'-'+${game.three_point_attempted}"></td>
-                            <td th:text="${game.free_throw_made}+'-'+${game.free_throw_attempted}"></td>
-                            <td th:text="${game.offRebound+game.defRebound}"></td>
-                            <td th:text="${game.assist}"></td>
-                            <td th:text="${game.steal}"></td>
-                            <td th:text="${game.block}"></td>
-                            <td th:text="${game.turnover}"></td>
-                            <td th:text="${game.foul}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/player/list}">Back</a>
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-player-tab" data-toggle="tab" href="#personalStats" role="tab" aria-selected="true">Personal Statistic</a></li>
+                    <a class="nav-item nav-link" id="nav-competition-tab" data-toggle="tab" role="tab" href="#gameLogs">Game Logs</a></li>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div id="personalStats" class="tab-pane fade show active"  role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Personal Statistic</h3>
+                            <hr>
+                            <div style="overflow-x:auto;">
+                                <table class="rounded table table-bordered">
+                                    <thead >
+                                    <tr>
+                                        <th scope="col">Competition</th>
+                                        <th scope="col">Club</th>
+                                        <th scope="col">Games</th>
+                                        <th scope="col">PPG</th>
+                                        <th scope="col">FGMPG</th>
+                                        <th scope="col">FGAPG</th>
+                                        <th scope="col">FG%</th>
+                                        <th scope="col">2PMPG</th>
+                                        <th scope="col">2PAPG</th>
+                                        <th scope="col">2P%</th>
+                                        <th scope="col">3PMPG</th>
+                                        <th scope="col">3PAPG</th>
+                                        <th scope="col">3P%</th>
+                                        <th scope="col">FTMPG</th>
+                                        <th scope="col">FTAPG</th>
+                                        <th scope="col">FT%</th>
+                                        <th scope="col">APG</th>
+                                        <th scope="col">OREBPG</th>
+                                        <th scope="col">DREBRPG</th>
+                                        <th scope="col">RPG</th>
+                                        <th scope="col">BLKPG</th>
+                                        <th scope="col">STLPG</th>
+                                        <th scope="col">TOPG</th>
+                                        <th scope="col">PFPG</th>
+                                        <th scope="col">FLSONPG</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="stats, iterationStatus : ${personalStats}">
+                                        <td th:text="${stats.competition_id.name}"></td>
+                                        <td th:text="${stats.club}"></td>
+                                        <td th:text="${stats.game}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.ppg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.fgmpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.fgapg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.fgperpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.twoptmpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.twoptapg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.twoptperpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.threeptmpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.threeptapg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.threeptperpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.ftmpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.ftapg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.ftperpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.apg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.orpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.drpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.rpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.blkpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.stlpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.topg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.flspg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.flsonpg, 0, 2)}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/player/list}">Back</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="gameLogs" class="tab-pane fade" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Game Logs</h3>
+                            <hr>
+                            <div style="overflow-x:auto;">
+                                <table class="rounded table table-bordered">
+                                    <thead >
+                                    <tr>
+                                        <th scope="col">Game</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Mins</th>
+                                        <th scope="col">Pts</th>
+                                        <th scope="col">Field Goal</th>
+                                        <th scope="col">Field Goal Percentage</th>
+                                        <th scope="col">Two Point</th>
+                                        <th scope="col">Two Point </th>
+                                        <th scope="col">Three Point</th>
+                                        <th scope="col">Three Point Percentage</th>
+                                        <th scope="col">Free Throw</th>
+                                        <th scope="col">Free Throw Percentage</th>
+                                        <th scope="col">Offensive Rebound</th>
+                                        <th scope="col">Defensive Rebound</th>
+                                        <th scope="col">Total Rebound</th>
+                                        <th scope="col">Assist</th>
+                                        <th scope="col">Steal</th>
+                                        <th scope="col">Block</th>
+                                        <th scope="col">Turnover</th>
+                                        <th scope="col">Foul</th>
+                                        <th scope="col">Foul Received</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="game, iterationStatus : ${gameLogs}">
+                                        <div th:switch="${player.player_club.name==game.game_id.home_club.name}">
+                                            <td th:case="true" th:text="${game.game_id.away_club.name}"></td>
+                                            <td th:case="false" th:text="${game.game_id.home_club.name}"></td>
+                                        </div>
+                                        <td th:text="${game.game_id.date.Date}+'-'+${game.game_id.date.Month+1}+'-'+${game.game_id.date.Year+1900}"></td>
+                                        <td th:text="${game.minute}"></td>
+                                        <td th:text="${game.point}"></td>
+                                        <td th:text="${game.field_goal_made}+'-'+${game.field_goal_attempted}"></td>
+                                        <td th:text="${#numbers.formatDecimal(game.field_goal_percentage, 0, 2)}"></td>
+                                        <td th:text="${game.two_point_made}+'-'+${game.two_point_attempted}"></td>
+                                        <td th:text="${#numbers.formatDecimal(game.two_point_percentage, 0, 2)}"></td>
+                                        <td th:text="${game.three_point_made}+'-'+${game.three_point_attempted}"></td>
+                                        <td th:text="${#numbers.formatDecimal(game.three_point_percentage, 0, 2)}"></td>
+                                        <td th:text="${game.free_throw_made}+'-'+${game.free_throw_attempted}"></td>
+                                        <td th:text="${#numbers.formatDecimal(game.free_throw_percentage, 0, 2)}"></td>
+                                        <td th:text="${game.offRebound}"></td>
+                                        <td th:text="${game.defRebound}"></td>
+                                        <td th:text="${game.offRebound+game.defRebound}"></td>
+                                        <td th:text="${game.assist}"></td>
+                                        <td th:text="${game.steal}"></td>
+                                        <td th:text="${game.block}"></td>
+                                        <td th:text="${game.turnover}"></td>
+                                        <td th:text="${game.foul}"></td>
+                                        <td th:text="${game.foulon}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/player/list}">Back</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

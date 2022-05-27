@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -10,9 +10,9 @@
     <object th:include="fragments/fragment :: styles" th:remove="tag"></object>
 </head>
 
-<body style="font-family: 'Noto Sans KR', sans-serif; background-color: #f0f0f0">
+<body style="font-family: 'Noto Sans KR', sans-serif;">
 <nav th:replace="fragments/fragment"></nav>
-<div class="jumbotron jumbotron-fluid" style="background-color: #dddddd">
+<div class="jumbotron jumbotron-fluid" style="background-color: transparent">
     <div class="container">
         <h1 class="display-4" th:text="${competition.name}"></h1>
         <hr>
@@ -28,82 +28,122 @@
                 <div class="card-body">
                     <h3 class="card-title" th:text="${game.away_club.name}+' Player Statistic'"></h3>
                     <hr>
-                    <a th:href="@{/competition/game/statistic/add(gameId=${game.id},clubId=${game.away_club.id})}" class="link-light">+ Add game statistic</a>
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Minutes</th>
-                            <th scope="col">Field Goal</th>
-                            <th scope="col">Two Point</th>
-                            <th scope="col">Three Point</th>
-                            <th scope="col">Free Throw</th>
-                            <th scope="col">Rebound</th>
-                            <th scope="col">Assist</th>
-                            <th scope="col">Steal</th>
-                            <th scope="col">Block</th>
-                            <th scope="col">Turnover</th>
-                            <th scope="col">Foul</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="away, iterationStatus : ${awayGameStatistic}">
-                            <td th:text="${away.player_id.number}"></td>
-                            <td th:text="${away.player_id.name}"></td>
-                            <td th:text="${away.minute}"></td>
-                            <td th:text="${away.field_goal_made}+'-'+${away.field_goal_attempted}"></td>
-                            <td th:text="${away.two_point_made}+'-'+${away.two_point_attempted}"></td>
-                            <td th:text="${away.three_point_made}+'-'+${away.three_point_attempted}"></td>
-                            <td th:text="${away.free_throw_made}+'-'+${away.free_throw_attempted}"></td>
-                            <td th:text="${away.offRebound+away.defRebound}"></td>
-                            <td th:text="${away.assist}"></td>
-                            <td th:text="${away.steal}"></td>
-                            <td th:text="${away.block}"></td>
-                            <td th:text="${away.turnover}"></td>
-                            <td th:text="${away.foul}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div th:if="${game.away_statistic_identifier==0}">
+                        <a th:href="@{/competition/game/statistic/add(gameId=${game.id},clubId=${game.away_club.id})}" class="link-light">+ Add game statistic</a>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="rounded table table-bordered">
+                            <thead >
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Minutes</th>
+                                <th scope="col">Pts</th>
+                                <th scope="col">Field Goal</th>
+                                <th scope="col">Field Goal Percentage</th>
+                                <th scope="col">Two Point</th>
+                                <th scope="col">Two Point </th>
+                                <th scope="col">Three Point</th>
+                                <th scope="col">Three Point Percentage</th>
+                                <th scope="col">Free Throw</th>
+                                <th scope="col">Free Throw Percentage</th>
+                                <th scope="col">Offensive Rebound</th>
+                                <th scope="col">Defensive Rebound</th>
+                                <th scope="col">Total Rebound</th>
+                                <th scope="col">Assist</th>
+                                <th scope="col">Steal</th>
+                                <th scope="col">Block</th>
+                                <th scope="col">Turnover</th>
+                                <th scope="col">Foul</th>
+                                <th scope="col">Foul Received</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="away, iterationStatus : ${awayGameStatistic}">
+                                <td th:text="${away.player_id.number}"></td>
+                                <td th:text="${away.player_id.name}"></td>
+                                <td th:text="${away.minute}"></td>
+                                <td th:text="${away.point}"></td>
+                                <td th:text="${away.field_goal_made}+'-'+${away.field_goal_attempted}"></td>
+                                <td th:text="${#numbers.formatDecimal(away.field_goal_percentage, 0, 2)}"></td>
+                                <td th:text="${away.two_point_made}+'-'+${away.two_point_attempted}"></td>
+                                <td th:text="${#numbers.formatDecimal(away.two_point_percentage, 0, 2)}"></td>
+                                <td th:text="${away.three_point_made}+'-'+${away.three_point_attempted}"></td>
+                                <td th:text="${#numbers.formatDecimal(away.three_point_percentage, 0, 2)}"></td>
+                                <td th:text="${away.free_throw_made}+'-'+${away.free_throw_attempted}"></td>
+                                <td th:text="${#numbers.formatDecimal(away.free_throw_percentage, 0, 2)}"></td>
+                                <td th:text="${away.offRebound}"></td>
+                                <td th:text="${away.defRebound}"></td>
+                                <td th:text="${away.offRebound+away.defRebound}"></td>
+                                <td th:text="${away.assist}"></td>
+                                <td th:text="${away.steal}"></td>
+                                <td th:text="${away.block}"></td>
+                                <td th:text="${away.turnover}"></td>
+                                <td th:text="${away.foul}"></td>
+                                <td th:text="${away.foulon}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <h3 class="card-title" th:text="${game.home_club.name}+' Player Statistic'"></h3>
                     <hr>
-                    <a th:href="@{/competition/game/statistic/add(gameId=${game.id},clubId=${game.home_club.id})}" class="link-light">+ Add game statistic</a>
-                    <table class="rounded table table-bordered">
-                        <thead >
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Minutes</th>
-                            <th scope="col">Field Goal</th>
-                            <th scope="col">Two Point</th>
-                            <th scope="col">Three Point</th>
-                            <th scope="col">Free Throw</th>
-                            <th scope="col">Rebound</th>
-                            <th scope="col">Assist</th>
-                            <th scope="col">Steal</th>
-                            <th scope="col">Block</th>
-                            <th scope="col">Turnover</th>
-                            <th scope="col">Foul</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="home, iterationStatus : ${homeGameStatistic}">
-                            <td th:text="${home.player_id.number}"></td>
-                            <td th:text="${home.player_id.name}"></td>
-                            <td th:text="${home.minute}"></td>
-                            <td th:text="${home.field_goal_made}+'-'+${home.field_goal_attempted}"></td>
-                            <td th:text="${home.two_point_made}+'-'+${home.two_point_attempted}"></td>
-                            <td th:text="${home.three_point_made}+'-'+${home.three_point_attempted}"></td>
-                            <td th:text="${home.free_throw_made}+'-'+${home.free_throw_attempted}"></td>
-                            <td th:text="${home.offRebound+home.defRebound}"></td>
-                            <td th:text="${home.assist}"></td>
-                            <td th:text="${home.steal}"></td>
-                            <td th:text="${home.block}"></td>
-                            <td th:text="${home.turnover}"></td>
-                            <td th:text="${home.foul}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div th:if="${game.home_statistic_identifier==0}">
+                        <a th:href="@{/competition/game/statistic/add(gameId=${game.id},clubId=${game.home_club.id})}" class="link-light">+ Add game statistic</a>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="rounded table table-bordered">
+                            <thead >
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Minutes</th>
+                                <th scope="col">Pts</th>
+                                <th scope="col">Field Goal</th>
+                                <th scope="col">Field Goal Percentage</th>
+                                <th scope="col">Two Point</th>
+                                <th scope="col">Two Point </th>
+                                <th scope="col">Three Point</th>
+                                <th scope="col">Three Point Percentage</th>
+                                <th scope="col">Free Throw</th>
+                                <th scope="col">Free Throw Percentage</th>
+                                <th scope="col">Offensive Rebound</th>
+                                <th scope="col">Defensive Rebound</th>
+                                <th scope="col">Total Rebound</th>
+                                <th scope="col">Assist</th>
+                                <th scope="col">Steal</th>
+                                <th scope="col">Block</th>
+                                <th scope="col">Turnover</th>
+                                <th scope="col">Foul</th>
+                                <th scope="col">Foul Received</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="home, iterationStatus : ${homeGameStatistic}">
+                                <td th:text="${home.player_id.number}"></td>
+                                <td th:text="${home.player_id.name}"></td>
+                                <td th:text="${home.minute}"></td>
+                                <td th:text="${home.point}"></td>
+                                <td th:text="${home.field_goal_made}+'-'+${home.field_goal_attempted}"></td>
+                                <td th:text="${#numbers.formatDecimal(home.field_goal_percentage, 0, 2)}"></td>
+                                <td th:text="${home.two_point_made}+'-'+${home.two_point_attempted}"></td>
+                                <td th:text="${#numbers.formatDecimal(home.two_point_percentage, 0, 2)}"></td>
+                                <td th:text="${home.three_point_made}+'-'+${home.three_point_attempted}"></td>
+                                <td th:text="${#numbers.formatDecimal(home.three_point_percentage, 0, 2)}"></td>
+                                <td th:text="${home.free_throw_made}+'-'+${home.free_throw_attempted}"></td>
+                                <td th:text="${#numbers.formatDecimal(home.free_throw_percentage, 0, 2)}"></td>
+                                <td th:text="${home.offRebound}"></td>
+                                <td th:text="${home.defRebound}"></td>
+                                <td th:text="${home.offRebound+home.defRebound}"></td>
+                                <td th:text="${home.assist}"></td>
+                                <td th:text="${home.steal}"></td>
+                                <td th:text="${home.block}"></td>
+                                <td th:text="${home.turnover}"></td>
+                                <td th:text="${home.foul}"></td>
+                                <td th:text="${home.foulon}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <a type="button"  class="btn btn-outline-primary btn-lg float-left" th:href="@{/competition/detail(id=${competition.id})}">Back</a>
                 </div>
             </div>
