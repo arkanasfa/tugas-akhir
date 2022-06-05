@@ -49,6 +49,7 @@ public class PersonalStatisticServiceImpl implements PersonalStatisticService{
         personalStatistic.setDefRebounds(personalStatistic.getDefRebounds()+gameStatistic.getDefRebound());
         personalStatistic.setRebounds(personalStatistic.getRebounds()+gameStatistic.getDefRebound()+gameStatistic.getDefRebound());
         personalStatistic.setBlocks(personalStatistic.getBlocks()+gameStatistic.getBlock());
+        personalStatistic.setBlockAgainsts(personalStatistic.getBlockAgainsts()+gameStatistic.getBlockAgainst());
         personalStatistic.setSteals(personalStatistic.getSteals()+gameStatistic.getSteal());
         personalStatistic.setFouls(personalStatistic.getFouls()+gameStatistic.getFoul());
         personalStatistic.setFoulons(personalStatistic.getFoulons()+gameStatistic.getFoulon());
@@ -80,6 +81,7 @@ public class PersonalStatisticServiceImpl implements PersonalStatisticService{
         personalStatistic.setDrpg(personalStatistic.getDefRebounds()/personalStatistic.getGame());
         personalStatistic.setRpg(personalStatistic.getRebounds()/personalStatistic.getGame());
         personalStatistic.setBlkpg(personalStatistic.getBlocks()/personalStatistic.getGame());
+        personalStatistic.setBlkapg(personalStatistic.getBlockAgainsts()/personalStatistic.getGame());
         personalStatistic.setStlpg(personalStatistic.getSteals()/personalStatistic.getGame());
         personalStatistic.setFlspg(personalStatistic.getFouls()/personalStatistic.getGame());
         personalStatistic.setFlsonpg(personalStatistic.getFoulons()/personalStatistic.getGame());
@@ -120,6 +122,7 @@ public class PersonalStatisticServiceImpl implements PersonalStatisticService{
         personalStatistic.setDefRebounds(personalStatistic.getDefRebounds()-gameStatistic.getDefRebound());
         personalStatistic.setRebounds(personalStatistic.getRebounds()-(gameStatistic.getDefRebound()+gameStatistic.getDefRebound()));
         personalStatistic.setBlocks(personalStatistic.getBlocks()-gameStatistic.getBlock());
+        personalStatistic.setBlockAgainsts(personalStatistic.getBlockAgainsts()-gameStatistic.getBlockAgainst());
         personalStatistic.setSteals(personalStatistic.getSteals()-gameStatistic.getSteal());
         personalStatistic.setFouls(personalStatistic.getFouls()-gameStatistic.getFoul());
         personalStatistic.setFoulons(personalStatistic.getFoulons()-gameStatistic.getFoulon());
@@ -163,6 +166,7 @@ public class PersonalStatisticServiceImpl implements PersonalStatisticService{
         personalStatistic.setDrpg(personalStatistic.getDefRebounds()/personalStatistic.getGame());
         personalStatistic.setRpg(personalStatistic.getRebounds()/personalStatistic.getGame());
         personalStatistic.setBlkpg(personalStatistic.getBlocks()/personalStatistic.getGame());
+        personalStatistic.setBlkapg(personalStatistic.getBlockAgainsts()/personalStatistic.getGame());
         personalStatistic.setStlpg(personalStatistic.getSteals()/personalStatistic.getGame());
         personalStatistic.setFlspg(personalStatistic.getFouls()/personalStatistic.getGame());
         personalStatistic.setFlsonpg(personalStatistic.getFlsonpg()/personalStatistic.getGame());

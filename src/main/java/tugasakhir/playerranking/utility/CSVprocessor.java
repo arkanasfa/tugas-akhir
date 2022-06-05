@@ -82,6 +82,7 @@ public class CSVprocessor {
                 playerGameStatistic.setTurnover(Integer.parseInt(csvRecord.get("TO")));
                 playerGameStatistic.setSteal(Integer.parseInt(csvRecord.get("STL")));
                 playerGameStatistic.setBlock(Integer.parseInt(csvRecord.get("BLK")));
+                playerGameStatistic.setBlockAgainst(Integer.parseInt(csvRecord.get("BLKR")));
                 playerGameStatistic.setFoul(Integer.parseInt(csvRecord.get("PF")));
                 playerGameStatistic.setFoulon(Integer.parseInt(csvRecord.get("FLS ON")));
                 playerGameStatistic.setGame_id(game);

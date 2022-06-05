@@ -30,15 +30,17 @@
                             <tr>
                                 <th scope="col">No.</th>
                                 <th scope="col">Name</th>
+                                <th scope="col">FGMPG</th>
+                                <th scope="col">FTMPG</th>
+                                <th scope="col">FG%</th>
                                 <th scope="col">2P%</th>
                                 <th scope="col">3P%</th>
                                 <th scope="col">FT%</th>
                                 <th scope="col">APG</th>
                                 <th scope="col">DRPG</th>
                                 <th scope="col">ORPG</th>
-                                <th scope="col">BLKPG</th>
-                                <th scope="col">FLSONPG</th>
                                 <th scope="col">TOPG</th>
+                                <th scope="col">PIR</th>
                                 <th scope="col">Performance Score</th>
                             </tr>
                             </thead>
@@ -46,15 +48,21 @@
                             <tr th:each="rank, iterationStatus : ${listRank}">
                                 <td th:text="${iterationStatus.count}"></td>
                                 <td th:text="${rank.personalStatistic.player.name}"></td>
+                                <td th:text="${#numbers.formatDecimal(rank.personalStatistic.fgmpg, 0, 2)}"></td>
+                                <td th:text="${#numbers.formatDecimal(rank.personalStatistic.ftmpg, 0, 2)}"></td>
+                                <td th:text="${#numbers.formatDecimal(rank.personalStatistic.fgperpg, 0, 2)}"></td>
                                 <td th:text="${#numbers.formatDecimal(rank.personalStatistic.twoptperpg, 0, 2)}"></td>
                                 <td th:text="${#numbers.formatDecimal(rank.personalStatistic.threeptperpg, 0, 2)}"></td>
                                 <td th:text="${#numbers.formatDecimal(rank.personalStatistic.ftperpg, 0, 2)}"></td>
                                 <td th:text="${#numbers.formatDecimal(rank.personalStatistic.apg, 0, 2)}"></td>
                                 <td th:text="${#numbers.formatDecimal(rank.personalStatistic.drpg, 0, 2)}"></td>
                                 <td th:text="${#numbers.formatDecimal(rank.personalStatistic.orpg, 0, 2)}"></td>
-                                <td th:text="${#numbers.formatDecimal(rank.personalStatistic.blkpg, 0, 2)}"></td>
-                                <td th:text="${#numbers.formatDecimal(rank.personalStatistic.flsonpg, 0, 2)}"></td>
                                 <td th:text="${#numbers.formatDecimal(rank.personalStatistic.topg, 0, 2)}"></td>
+                                <td th:text="${#numbers.formatDecimal((rank.personalStatistic.ppg+rank.personalStatistic.rpg+rank.personalStatistic.apg+
+                                rank.personalStatistic.stlpg+rank.personalStatistic.blkpg+rank.personalStatistic.flsonpg)-
+                                ((rank.personalStatistic.fgapg
+                                -rank.personalStatistic.fgmpg)+(rank.personalStatistic.ftapg
+                                -rank.personalStatistic.ftmpg)+rank.personalStatistic.topg+rank.personalStatistic.flspg+rank.personalStatistic.blkapg), 0, 2)}"></td>
                                 <td th:text="${#numbers.formatDecimal(rank.performance_score, 0, 4)}"></td>
                             </tr>
                             </tbody>

@@ -69,6 +69,7 @@
                                         <th scope="col">DREBRPG</th>
                                         <th scope="col">RPG</th>
                                         <th scope="col">BLKPG</th>
+                                        <th scope="col">BLKAPG</th>
                                         <th scope="col">STLPG</th>
                                         <th scope="col">TOPG</th>
                                         <th scope="col">PFPG</th>
@@ -98,6 +99,7 @@
                                         <td th:text="${#numbers.formatDecimal(stats.drpg, 0, 2)}"></td>
                                         <td th:text="${#numbers.formatDecimal(stats.rpg, 0, 2)}"></td>
                                         <td th:text="${#numbers.formatDecimal(stats.blkpg, 0, 2)}"></td>
+                                        <td th:text="${#numbers.formatDecimal(stats.blkapg, 0, 2)}"></td>
                                         <td th:text="${#numbers.formatDecimal(stats.stlpg, 0, 2)}"></td>
                                         <td th:text="${#numbers.formatDecimal(stats.topg, 0, 2)}"></td>
                                         <td th:text="${#numbers.formatDecimal(stats.flspg, 0, 2)}"></td>
@@ -137,6 +139,7 @@
                                         <th scope="col">Assist</th>
                                         <th scope="col">Steal</th>
                                         <th scope="col">Block</th>
+                                        <th scope="col">Block Against</th>
                                         <th scope="col">Turnover</th>
                                         <th scope="col">Foul</th>
                                         <th scope="col">Foul Received</th>
@@ -165,6 +168,7 @@
                                         <td th:text="${game.assist}"></td>
                                         <td th:text="${game.steal}"></td>
                                         <td th:text="${game.block}"></td>
+                                        <td th:text="${game.blockAgainst}"></td>
                                         <td th:text="${game.turnover}"></td>
                                         <td th:text="${game.foul}"></td>
                                         <td th:text="${game.foulon}"></td>

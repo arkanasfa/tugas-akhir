@@ -103,6 +103,10 @@ public class PlayerGameStatisticModel implements Serializable{
     private Integer block;
 
     @NotNull
+    @Column(name="blockAgainst",nullable = false)
+    private Integer blockAgainst;
+
+    @NotNull
     @Column(name="foul",nullable = false)
     private Integer foul;
 
@@ -342,5 +346,13 @@ public class PlayerGameStatisticModel implements Serializable{
 
     public void setFoulon(Integer foulon) {
         this.foulon = foulon;
+    }
+
+    public Integer getBlockAgainst() {
+        return blockAgainst;
+    }
+
+    public void setBlockAgainst(Integer blockAgainst) {
+        this.blockAgainst = blockAgainst;
     }
 }

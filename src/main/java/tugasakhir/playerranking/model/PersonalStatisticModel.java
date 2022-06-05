@@ -100,6 +100,10 @@ public class PersonalStatisticModel implements Serializable{
     private Double blkpg= 0.0;
 
     @NotNull
+    @Column(name="blkapg",nullable = false)
+    private Double blkapg= 0.0;
+
+    @NotNull
     @Column(name="stlpg",nullable = false)
     private Double stlpg= 0.0;
 
@@ -170,6 +174,10 @@ public class PersonalStatisticModel implements Serializable{
     @NotNull
     @Column(name="totalBlock",nullable = false)
     private Double blocks= 0.0;
+
+    @NotNull
+    @Column(name="totalBlockAgainst",nullable = false)
+    private Double blockAgainsts= 0.0;
 
     @NotNull
     @Column(name="totalSteal",nullable = false)
@@ -576,5 +584,21 @@ public class PersonalStatisticModel implements Serializable{
 
     public void setThreePointAttempts(Double threePointAttempts) {
         this.threePointAttempts = threePointAttempts;
+    }
+
+    public Double getBlkapg() {
+        return blkapg;
+    }
+
+    public void setBlkapg(Double blkapg) {
+        this.blkapg = blkapg;
+    }
+
+    public Double getBlockAgainsts() {
+        return blockAgainsts;
+    }
+
+    public void setBlockAgainsts(Double blockAgainsts) {
+        this.blockAgainsts = blockAgainsts;
     }
 }

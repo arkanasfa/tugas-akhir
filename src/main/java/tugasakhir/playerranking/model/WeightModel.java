@@ -21,31 +21,35 @@ public class WeightModel implements Serializable {
 
     @NotNull
     @Column(name="C3",nullable = false)
-    private Double C3 = 0.1;
+    private Double C3 = 0.05;
 
     @NotNull
     @Column(name="C4",nullable = false)
-    private Double C4 = 0.1;
+    private Double C4 = 0.0125;
 
     @NotNull
     @Column(name="C5",nullable = false)
-    private Double C5 = 0.1;
+    private Double C5 = 0.025;
 
     @NotNull
     @Column(name="C6",nullable = false)
-    private Double C6 = 0.1;
+    private Double C6 = 0.0125;
 
     @NotNull
     @Column(name="C7",nullable = false)
-    private Double C7 = 0.1;
+    private Double C7 = 0.125;
 
     @NotNull
     @Column(name="C8",nullable = false)
-    private Double C8 = 0.1;
+    private Double C8 = 0.15;
 
     @NotNull
     @Column(name="C9",nullable = false)
-    private Double C9 = 0.1;
+    private Double C9 = 0.15;
+
+    @NotNull
+    @Column(name="C10",nullable = false)
+    private Double C10 = 0.175;
 
     @OneToOne(mappedBy = "weight")
     private RankModel rank;
@@ -128,6 +132,14 @@ public class WeightModel implements Serializable {
 
     public void setC9(Double c9) {
         C9 = c9;
+    }
+
+    public Double getC10() {
+        return C10;
+    }
+
+    public void setC10(Double c10) {
+        C10 = c10;
     }
 
     public RankModel getRank() {

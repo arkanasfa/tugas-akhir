@@ -69,14 +69,15 @@ public class RankServiceImpl implements RankService{
         List<List<Double>> evaluationMatrix = new ArrayList<>();
         for(int i=0;i<listPersonalStatistic.size();i++){
             ArrayList<Double> playerStats = new ArrayList<>();
+            playerStats.add(listPersonalStatistic.get(i).getFgmpg());
+            playerStats.add(listPersonalStatistic.get(i).getFtmpg());
+            playerStats.add(listPersonalStatistic.get(i).getFgperpg());
             playerStats.add(listPersonalStatistic.get(i).getTwoptperpg());
             playerStats.add(listPersonalStatistic.get(i).getThreeptperpg());
             playerStats.add(listPersonalStatistic.get(i).getFtperpg());
             playerStats.add(listPersonalStatistic.get(i).getApg());
             playerStats.add(listPersonalStatistic.get(i).getOrpg());
             playerStats.add(listPersonalStatistic.get(i).getDrpg());
-            playerStats.add(listPersonalStatistic.get(i).getBlkpg());
-            playerStats.add(listPersonalStatistic.get(i).getFlsonpg());
             playerStats.add(listPersonalStatistic.get(i).getTopg());
             evaluationMatrix.add(playerStats);
         }
@@ -85,7 +86,7 @@ public class RankServiceImpl implements RankService{
 
     private List<List<Double>> normalizeMatrix(List<List<Double>> evaluationMatrix){
         List<Double> divisor = getDivisor(evaluationMatrix);
-        for(int col=0;col<9;col++){
+        for(int col=0;col<10;col++){
             for(int row=0;row<evaluationMatrix.size();row++){
                 evaluationMatrix.get(row).set(col,evaluationMatrix.get(row).get(col)/divisor.get(col));
             }
@@ -95,7 +96,7 @@ public class RankServiceImpl implements RankService{
 
     private List<Double> getDivisor(List<List<Double>> evaluationMatrix){
         List<Double> divisor = new ArrayList<>();
-        for(int col=0;col<9;col++){
+        for(int col=0;col<10;col++){
             Double squareValue = 0.0;
             for(int row=0;row<evaluationMatrix.size();row++){
                 squareValue = squareValue+(evaluationMatrix.get(row).get(col)*evaluationMatrix.get(row).get(col));
@@ -109,7 +110,7 @@ public class RankServiceImpl implements RankService{
     private List<List<Double>> weightMatrix(List<List<Double>> normalizedMatrix, List<RankModel> listRank){
         for(int row=0;row<normalizedMatrix.size();row++){
             List<Double> weight = Arrays.asList(listRank.get(row).getWeight().getC1(),listRank.get(row).getWeight().getC2(),listRank.get(row).getWeight().getC3(),listRank.get(row).getWeight().getC4(),
-                    listRank.get(row).getWeight().getC5(),listRank.get(row).getWeight().getC6(),listRank.get(row).getWeight().getC7(),listRank.get(row).getWeight().getC8(),listRank.get(row).getWeight().getC9());
+                    listRank.get(row).getWeight().getC5(),listRank.get(row).getWeight().getC6(),listRank.get(row).getWeight().getC7(),listRank.get(row).getWeight().getC8(),listRank.get(row).getWeight().getC9(),listRank.get(row).getWeight().getC10());
             for(int col=0;col<normalizedMatrix.get(row).size();col++){
                 normalizedMatrix.get(row).set(col,normalizedMatrix.get(row).get(col)*weight.get(col));
             }
@@ -121,7 +122,7 @@ public class RankServiceImpl implements RankService{
         List<List<Double>> idealSolutionMatrix = new ArrayList<>();
         List<Double> maxValue = new ArrayList<>();
         List<Double> minValue = new ArrayList<>();
-        for(int col=0;col<9;col++){
+        for(int col=0;col<10;col++){
             List<Double> alternatives = new ArrayList<>();
             for(int row=0;row<weightedMatrix.size();row++){
                 alternatives.add(weightedMatrix.get(row).get(col));
@@ -138,14 +139,15 @@ public class RankServiceImpl implements RankService{
         List<Double> bestEuclideanDistance = new ArrayList<>();
         for(int row=0;row<weightedMatrix.size();row++){
            Double calculation = 0.0;
-           for(int colBen=0;colBen<8;colBen++){
+           for(int colBen=0;colBen<9;colBen++){
                calculation=calculation+(Math.pow(weightedMatrix.get(row).get(colBen)-idealSolutionMatrix.get(0).get(colBen),2));
             }
-           for(int colCost=8;colCost<9;colCost++){
+           for(int colCost=9;colCost<10;colCost++){
                calculation=calculation+(Math.pow(weightedMatrix.get(row).get(colCost)-idealSolutionMatrix.get(1).get(colCost),2));
            }
            bestEuclideanDistance.add(sqrt(calculation));
         }
+        System.out.println("bestEuclideanDistance:");
         System.out.println(bestEuclideanDistance);
         return bestEuclideanDistance;
     }
@@ -154,14 +156,15 @@ public class RankServiceImpl implements RankService{
         List<Double> worstEuclideanDistance = new ArrayList<>();
         for(int row=0;row<weightedMatrix.size();row++){
             Double calculation = 0.0;
-            for(int colBen=0;colBen<8;colBen++){
+            for(int colBen=0;colBen<9;colBen++){
                 calculation=calculation+(Math.pow(weightedMatrix.get(row).get(colBen)-idealSolutionMatrix.get(1).get(colBen),2));
             }
-            for(int colCost=8;colCost<9;colCost++){
+            for(int colCost=9;colCost<10;colCost++){
                 calculation=calculation+(Math.pow(weightedMatrix.get(row).get(colCost)-idealSolutionMatrix.get(0).get(colCost),2));
             }
             worstEuclideanDistance.add(sqrt(calculation));
         }
+        System.out.println("worstEuclideanDistance:");
         System.out.println(worstEuclideanDistance);
         return worstEuclideanDistance;
     }
